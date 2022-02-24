@@ -86,7 +86,7 @@ publishing {
         gpr(MavenPublication) {
          //Del tutorial https://docs.gradle.org/current/userguide/publishing_maven.html#publishing_maven
         
-            groupId = 'mitfs.samples'
+            groupId = 'us.mitfs.samples'
             artifactId = 'a4i'
             version = '0.0'
 

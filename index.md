@@ -1,37 +1,30 @@
-## Welcome to GitHub Pages
+![Imagen](https://avatars.githubusercontent.com/u/71695310?s=400&amp;u=ddcba7460f1df463bbbb6e8fd6b5557e64fb114c&amp;v=4)
+# Audit4Improve-API
 
-You can use the [editor on GitHub](https://github.com/MIT-FS/Audit4Improve-API/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
-
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
-
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
+Este proyecto se utiliza como **ejemplo** en la asignatura [Factorías de Software](https://www.us.es/estudiar/que-estudiar/oferta-de-masteres/master-universitario-en-ingenieria-de-telecomunicacion-0/52040007), de _primer curso_ del [Máster Universitario en Ingeniería de Telecomunicación](https://www.us.es/estudiar/que-estudiar/oferta-de-masteres/master-universitario-en-ingenieria-de-telecomunicacion-0) de la [Universidad de sevilla](http://us.es)
+## Conceptos objetivo
+### Gestión de versiones
 ```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+- Git
+- Git Flow
+- Modelo administrador-integración
+- GitHub
 ```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/MIT-FS/Audit4Improve-API/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+[Modelo administrador-integración](http://git-scm.com/book/es/v2/Git-en-entornos-distribuidos-Flujos-de-trabajo-distribuidos)
+### Construcción de código y gestión de dependencias
+```markdown
+- Gestores de construcción de código
+- Repositorios de artefactos
+```
+### Integración continua
+```markdown
+- Servidores de integración continua
+- GitHub Actions
+```
+## Herramientas utilizadas
+1. GitHub como servidor de remotos
+2. Gradle
+3. Proyectos GitHub
+4. Acciones GitHub
+5. Paquetes GitHub
+6. Páginas GitHub

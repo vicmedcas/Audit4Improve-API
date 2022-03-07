@@ -3,6 +3,8 @@
  */
 package us.muit.fs.a4i.control;
 import org.kohsuke.github.*;
+
+import java.util.List;
 import java.util.logging.*;
 
 	/**
@@ -27,11 +29,20 @@ public class SupervisorControl {
 			int count=1;
 			for(GHRepository repo:myOwnRepos.toList()) {
 				System.out.println("Nombre de mi repositorio número "+count+" "+repo.getFullName());
+				List<GHProject> proyectos=repo.listProjects().toList();
+				int i=1;
+				for(GHProject project:proyectos){
+					System.out.println("Con proyecto "+i+" llamado "+project.getName()+" con id "+project.getId());
+					GHProject audit= github.getProject(project.getId());
+					System.out.println(audit);
+					i++;
+				}
 				if(repo.isFork()) {
 					System.out.println("Que es un fork de "+repo.fork().getName());
 				}
 				count++;
 			}
+
 			log.info("Mis datos "+myinfo);		
 			log.info("Mi repositorio "+unrepo);
 			log.info("Número de repositorios "+myrepos.toList().size());

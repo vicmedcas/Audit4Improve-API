@@ -25,7 +25,7 @@ gradle.properties
 
 # Package Files #
 *.jar
-#excluso el gradle wrapper de esta regla, sí quiero controlarlo
+#excluyo el gradle wrapper de esta regla, sí quiero controlarlo
 !gradle/wrapper/gradle-wrapper.jar
 *.war
 *.nar
@@ -36,4 +36,5 @@ gradle.properties
 
 
 
-
+#las pruebas har�n generar informes excel, que no quiero subir al repositorio remoto
+*.xls

@@ -20,9 +20,12 @@
  */
 package us.muit.fs.a4i.control;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.Date;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
@@ -32,8 +35,13 @@ import org.apache.poi.hssf.usermodel.HSSFRichTextString;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.sl.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CreationHelper;
 import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 /**
@@ -62,14 +70,39 @@ public final class HSSFReadWrite {
     /**
      * given a filename this outputs a sample sheet with just a set of
      * rows/cells.
+     * Tal y como está sobreescribe el libro, por lo que lo que había antes se elimina
+     * Yo lo que quiero es añadir una hoja, sin eliminar las anteriores
      */
     private static void testCreateSampleSheet(String outputFilename) throws IOException {
-        try (HSSFWorkbook wb = new HSSFWorkbook();
+    	
+    	 File f = new File(outputFilename+".xls");
+         InputStream inp = new FileInputStream(f);
+         HSSFWorkbook wb = (HSSFWorkbook) WorkbookFactory.create(inp);
+         int templateIndex=wb.getSheetIndex("Template");
+         HSSFSheet sheet = wb.cloneSheet(templateIndex);
+         int newIndex=wb.getSheetIndex(sheet);
+         /**
+          * No permite que dos hojas se llamen igual, primero habría que buscar si ya está y trabajar sobre ella
+          */
+         wb.setSheetName(newIndex, "kkkk");
+         inp.close();
+         FileOutputStream outputStream = new FileOutputStream(outputFilename+".xls");
+         wb.write(outputStream);
+         wb.close();
+         outputStream.close(); 
+    	
+     //   try (HSSFWorkbook wb = (HSSFWorkbook) WorkbookFactory.create(new File(outputFilename+".xls"));
+       /* 		
             FileOutputStream out = new FileOutputStream(outputFilename+".xls")) {
+        	CreationHelper createHelper = wb.getCreationHelper();  
             HSSFSheet s = wb.createSheet();
             HSSFCellStyle cs = wb.createCellStyle();
             HSSFCellStyle cs2 = wb.createCellStyle();
             HSSFCellStyle cs3 = wb.createCellStyle();
+            
+               
+            
+            
             HSSFFont f = wb.createFont();
             HSSFFont f2 = wb.createFont();
 
@@ -85,9 +118,16 @@ public final class HSSFReadWrite {
             cs2.setFillPattern(FillPatternType.SOLID_FOREGROUND);
             cs2.setFillForegroundColor((short) 0xA);
             cs2.setFont(f2);
-            wb.setSheetName(0, "Prueba_ApachePOI");
+            wb.setSheetName(0, "TerceraEjecucion");
+            
+            HSSFCellStyle miCellStyle= wb.createCellStyle();
+            miCellStyle.setDataFormat(createHelper.createDataFormat().getFormat("d/m/yy h:mm"));  
+            
+            Cell celdafecha=s.createRow(0).createCell(0);
+            celdafecha.setCellValue(new Date());
+            celdafecha.setCellStyle(miCellStyle);
             int rownum;
-            for (rownum = 0; rownum < 300; rownum++) {
+            for (rownum = 1; rownum < 300; rownum++) {
                 HSSFRow r = s.createRow(rownum);
                 if ((rownum % 2) == 0) {
                     r.setHeight((short) 0x249);
@@ -130,9 +170,10 @@ public final class HSSFReadWrite {
             wb.removeSheetAt(1);
 
             // end deleted sheet
-            wb.write(out);
-        }
-    }
+             * 
+             * */
+          
+           }
 
     /**
      * Method main

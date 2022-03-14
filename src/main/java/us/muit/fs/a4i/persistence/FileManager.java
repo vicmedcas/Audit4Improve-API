@@ -1,7 +1,7 @@
 /**
  * 
  */
-package us.muit.fs.a4i.control;
+package us.muit.fs.a4i.persistence;
 
 /**
  * <p>Interfaz con los aspectos comunes al manejo de ficheros</p>

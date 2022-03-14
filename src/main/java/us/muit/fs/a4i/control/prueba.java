@@ -3,22 +3,16 @@
  */
 package us.muit.fs.a4i.control;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
 
-import us.muit.fs.a4i.model.daos.ExcelDAO;
+import us.muit.fs.a4i.model.remote.RemoteBuilder;
+import us.muit.fs.a4i.model.remote.RepositoryGHBuilder;
+import us.muit.fs.a4i.model.daos.exceptions.ReportNotDefinedException;
 
-import us.muit.fs.a4i.model.daos.GHRepositoryReportBuilder;
-
-import us.muit.fs.a4i.model.entities.RepositoryReport;
-
+import us.muit.fs.a4i.model.entities.ReportI;
+import us.muit.fs.a4i.persistence.ExcelReportManager;
+import us.muit.fs.a4i.persistence.FileManager;
+import us.muit.fs.a4i.persistence.PersistenceManager;
 /**
  * @author isa
  *
@@ -27,31 +21,35 @@ public class prueba {
 
 	/**
 	 * @param args
+	 * @throws ReportNotDefinedException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ReportNotDefinedException {
 		
-		RepositoryReport repo;
+	ReportManagerI manager;
+	ReportI report;
+	PersistenceManager persister;
+	RemoteBuilder builder;
+	manager=new ReportManager();
+	builder=new RepositoryGHBuilder();
 	
-		GHRepositoryReportBuilder builder = new GHRepositoryReportBuilder();
-		
+	persister=new ExcelReportManager();
+	manager.setRemoteBuilder(builder);
+	manager.setPersistenceManager(persister);
 	
-		ExcelDAO<RepositoryReport> dao = new ExcelDAO<RepositoryReport>(builder);
-	   /**
-	    * los nombres de la hojas no pueden contener barras
-	    */
-		repo=dao.create("MIT-FS/Audit4Improve-API");
-	    System.out.println(repo);
-	    ExcelRepositoryReportManager manager=new ExcelRepositoryReportManager();
-	    System.out.println("Creado gestor de informe");
-	    manager.setReport(repo);
-	    try {
-	    	HSSFSheet hoja=manager.getSheet();
-			manager.save();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-	   }
+	report=manager.createReport("MIT-FS/Audit4Improve-API");
+	
+	try {
+		FileManager file=(FileManager) persister;
+		file.setName("test");
+		manager.save();
+	
+	} catch (ReportNotDefinedException e) {
+		System.out.println("Cuidado tiene que establecer el informe");
+		e.printStackTrace();
+	}
+	
+
 
 }
+}
+	

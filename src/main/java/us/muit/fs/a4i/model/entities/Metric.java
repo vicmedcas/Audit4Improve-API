@@ -7,12 +7,14 @@ import java.time.LocalDateTime;
 
 import java.time.ZoneOffset;
 import java.util.Date;
+import java.util.logging.Logger;
 
 /**
  * @author Isabel Román
  *
  */
 public class Metric<T> {
+	private static Logger log=Logger.getLogger(Metric.class.getName());
 	private String description;
 	private String name;
 	/**
@@ -33,13 +35,7 @@ public class Metric<T> {
 		this.date=builder.date;
 	}
 	
-	@Override
-	public String toString() {
-		String info;
-		info="Métrica para "+description+", con valor=" + value + ", source=" + source
-				+ ", unit=" + unit +" fecha de la medida=  "+ date;
-		return info;
-	}
+	
 	public String getDescription() {
 		return description;
 	}
@@ -103,6 +99,13 @@ public class Metric<T> {
 		public Metric<T> build(){
 			return new Metric<T>(this);			
 		}
+	}
+	@Override
+	public String toString() {
+		String info;
+		info="Métrica para "+description+", con valor=" + value + ", source=" + source
+				+ ", unit=" + unit +" fecha de la medida=  "+ date;
+		return info;
 	}
 	
 }

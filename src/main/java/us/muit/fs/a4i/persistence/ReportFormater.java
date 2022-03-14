@@ -1,7 +1,7 @@
 /**
  * 
  */
-package us.muit.fs.a4i.control;
+package us.muit.fs.a4i.persistence;
 
 /**
  * <p>Interfaz genérica para establecer ele stilo de los informes</p>

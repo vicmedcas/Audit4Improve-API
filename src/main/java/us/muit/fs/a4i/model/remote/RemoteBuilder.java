@@ -1,8 +1,9 @@
 /**
  * 
  */
-package us.muit.fs.a4i.model.daos;
+package us.muit.fs.a4i.model.remote;
 
+import us.muit.fs.a4i.model.entities.ReportI;
 
 /**
  * <p>Interfaz para desacoplar el mecanismo de construcción de una entidad de información del servidor remoto que aloja la información</p>
@@ -11,7 +12,7 @@ package us.muit.fs.a4i.model.daos;
  * @author IsabelRomán
  *
  */
-public interface RemoteBuilder<T> {
-	public void setId(String id);
-	public T construyeObjeto();
+public interface RemoteBuilder{
+	
+	public ReportI buildReport(String entityId);
 }

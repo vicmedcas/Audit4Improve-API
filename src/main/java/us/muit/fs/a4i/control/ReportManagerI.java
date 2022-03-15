@@ -4,9 +4,9 @@
 package us.muit.fs.a4i.control;
 
 import us.muit.fs.a4i.persistence.PersistenceManager;
-import us.muit.fs.a4i.model.daos.exceptions.ReportNotDefinedException;
+import us.muit.fs.a4i.exceptions.ReportNotDefinedException;
 import us.muit.fs.a4i.model.entities.ReportI;
-import us.muit.fs.a4i.model.remote.RemoteBuilder;
+import us.muit.fs.a4i.model.remote.RemoteEnquirer;
 import us.muit.fs.a4i.persistence.ReportFormater;
 
 /**
@@ -23,7 +23,7 @@ public interface ReportManagerI {
 	 * <p>Establece el formateador a usar</p>
 	 * @param El gestor de formato a utilizar
 	 */
-	public void setRemoteBuilder(RemoteBuilder remote);
+	public void setRemoteBuilder(RemoteEnquirer remote);
 	public void setPersistenceManager(PersistenceManager persistence);
 	public void setFormater(ReportFormater formater);
 	public void setIndicatorCalc(IndicatorsCalculator calc);

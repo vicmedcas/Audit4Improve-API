@@ -24,7 +24,8 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import us.muit.fs.a4i.control.ReportManagerI;
-import us.muit.fs.a4i.model.daos.exceptions.ReportNotDefinedException;
+import us.muit.fs.a4i.exceptions.ReportNotDefinedException;
+import us.muit.fs.a4i.model.entities.Indicator;
 import us.muit.fs.a4i.model.entities.Metric;
 import us.muit.fs.a4i.model.entities.ReportI;
 
@@ -92,11 +93,13 @@ public class ExcelReportManager implements PersistenceManager, FileManager{
 	/**
 	 * El libro contendrán todos los informes de un tipo concreto
 	 * Primero hay que abrir el libro
+	 * Busco la hoja correspondiente a esta entidad, si ya existe la elimino
+	 * Creo la hoja
 	 * @return
 	 * @throws IOException 
 	 * @throws EncryptedDocumentException 
 	 */
-	protected HSSFSheet getSheet() throws EncryptedDocumentException, IOException {
+	protected HSSFSheet getCleanSheet() throws EncryptedDocumentException, IOException {
 		log.info("Solicita una hoja nueva del libro manejado");
 		if(wb==null) {			
 			inputStream = new FileInputStream(filePath+fileName+".xls");
@@ -116,18 +119,25 @@ public class ExcelReportManager implements PersistenceManager, FileManager{
 			 * <p>Si no existe la creo.
 			 */
 			  sheet= wb.getSheet(report.getId().replaceAll("/", "."));
-			  log.info("Recuperada hoja");
-			  if(sheet==null) {
-				  sheet=wb.createSheet(report.getId().replaceAll("/", "."));
-				  log.info("Creada hoja");
-			  }			  
+			  
+			  if(sheet!=null) {
+				  log.info("Recuperada hoja, que ya existía");
+				  /*
+				   * Si la hoja existe la elimino
+				   */
+				  int index = wb.getSheetIndex(sheet);
+				  wb.removeSheetAt(index);
+			  }
+			  sheet=wb.createSheet(report.getId().replaceAll("/", "."));
+			  log.info("Creada hoja nueva");
+				
 		}
 		
 	  
 		return sheet;
 	}
 	/**
-	 * Guarda en una hoja con el nombre del id del informe todas las métricas y los indicadores que incluya
+	 * Guarda en un hoja limpia con el nombre del id del informe todas las métricas y los indicadores que incluya
 	 */
 	@Override
     public void saveReport() throws ReportNotDefinedException{
@@ -138,7 +148,7 @@ public class ExcelReportManager implements PersistenceManager, FileManager{
     	try {
     		FileOutputStream out;
     		if(sheet==null) {
-    			sheet=getSheet();
+    			sheet=getCleanSheet();
     		}
     		
     		/**
@@ -168,17 +178,8 @@ public class ExcelReportManager implements PersistenceManager, FileManager{
     	}
 
    private void persistMetric(Metric metric) {
-	   log.info("Introduzco métrica en la hoja");
-	   
-	   if(sheet==null) {
-			try {
-				sheet=getSheet();
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-		
-			}
-	   }
+	   log.info("Introduzco métrica en la hoja");	   
+	  
 	   int rowIndex=sheet.getLastRowNum();
 	   rowIndex++;
 	   Row row=sheet.createRow(rowIndex);
@@ -194,6 +195,24 @@ public class ExcelReportManager implements PersistenceManager, FileManager{
 	   
 	   }
 	   
+   private void persistIndicator(Indicator indicator) {
+	   log.info("Introduzco indicador en la hoja");
+	   
+	   
+	   int rowIndex=sheet.getLastRowNum();
+	   rowIndex++;
+	   Row row=sheet.createRow(rowIndex);
+	   log.info("Indice de fila nueva "+rowIndex);
+	   int cellIndex=0;
+	   row.createCell(cellIndex++).setCellValue(indicator.getName());
+	   row.createCell(cellIndex++).setCellValue(indicator.getValue().toString());
+
+	   row.createCell(cellIndex++).setCellValue(indicator.getDescription());
+	
+	   row.createCell(cellIndex).setCellValue(indicator.getDate().toString());
+	   log.info("Indice de celda final"+cellIndex);
+	   
+	   }
 
 	@Override
 	public void deleteReport() throws ReportNotDefinedException {

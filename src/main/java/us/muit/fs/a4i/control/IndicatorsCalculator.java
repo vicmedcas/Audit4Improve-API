@@ -14,6 +14,16 @@ import us.muit.fs.a4i.model.entities.ReportI;
  *
  */
 public interface IndicatorsCalculator {
+	/**
+	 * Calcula el indicador con el nombre que se pasa
+	 * Si las métricas que necesita no están en el informe las busca y las añade
+	 * @param name
+	 * @param report
+	 */
 	public void calcIndicator(String name,ReportI report);
-	public void calcAllIndicatos(ReportI report);
+	/**
+	 * Calcula todos los indicadores descritos
+	 * @param report
+	 */
+	public void calcAllIndicators(ReportI report);
 }

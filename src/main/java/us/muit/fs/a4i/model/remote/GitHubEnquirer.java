@@ -3,12 +3,12 @@
  */
 package us.muit.fs.a4i.model.remote;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.kohsuke.github.GitHub;
 import org.kohsuke.github.GitHubBuilder;
-
-import us.muit.fs.a4i.model.entities.ReportI;
 
 /**
  * <p>Clase abstracta con los métodos comunes a los constructores que recogen la información del servicio GitHub</p>
@@ -17,8 +17,9 @@ import us.muit.fs.a4i.model.entities.ReportI;
  * @author Isabel Román
  *
  */
-public abstract class RemoteGHBuilder implements RemoteBuilder {
-	private static Logger log=Logger.getLogger(RemoteGHBuilder.class.getName());
+public abstract class GitHubEnquirer implements RemoteEnquirer {
+	private static Logger log=Logger.getLogger(GitHubEnquirer.class.getName());
+	protected List<String> metricNames;
 	
 
 	/**
@@ -29,8 +30,8 @@ public abstract class RemoteGHBuilder implements RemoteBuilder {
 	
 	
 		
-	public RemoteGHBuilder() {
-		
+	public GitHubEnquirer() {
+		metricNames=new ArrayList<String>();
 	}
 	
 		
@@ -51,6 +52,12 @@ public abstract class RemoteGHBuilder implements RemoteBuilder {
 		log.info("Recuerde que debe configurar las variables de entorno GITHUB_LOGIN y GITHUB_OAUTH con su nombre de usuario y token respectivamente");
 	}	
 		return github;
+	}
+	protected void setMetric(String newMetric) {
+		metricNames.add(newMetric);
+	}
+	public List<String> getAvailableMetrics(){
+		return metricNames;
 	}
 
 }

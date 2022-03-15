@@ -5,14 +5,18 @@ package us.muit.fs.a4i.control;
 
 
 
-import us.muit.fs.a4i.model.remote.RemoteBuilder;
-import us.muit.fs.a4i.model.remote.RepositoryGHBuilder;
-import us.muit.fs.a4i.model.daos.exceptions.ReportNotDefinedException;
+import us.muit.fs.a4i.model.remote.RemoteEnquirer;
+import us.muit.fs.a4i.model.remote.GitHubRepositoryEnquirer;
+
+import java.io.IOException;
+
+import us.muit.fs.a4i.exceptions.ReportNotDefinedException;
 
 import us.muit.fs.a4i.model.entities.ReportI;
 import us.muit.fs.a4i.persistence.ExcelReportManager;
 import us.muit.fs.a4i.persistence.FileManager;
 import us.muit.fs.a4i.persistence.PersistenceManager;
+
 /**
  * @author isa
  *
@@ -28,9 +32,17 @@ public class prueba {
 	ReportManagerI manager;
 	ReportI report;
 	PersistenceManager persister;
-	RemoteBuilder builder;
+	RemoteEnquirer builder;
+	try {
+		System.out.println("Listado de propiedades disponibles "+Context.getPropertiesNames());
+		System.out.println(Context.getIndicatorsFile());
+	} catch (IOException e1) {
+		// TODO Auto-generated catch block
+		e1.printStackTrace();
+	}
+	/*
 	manager=new ReportManager();
-	builder=new RepositoryGHBuilder();
+	builder=new GitHubRepositoryEnquirer();
 	
 	persister=new ExcelReportManager();
 	manager.setRemoteBuilder(builder);
@@ -47,9 +59,7 @@ public class prueba {
 		System.out.println("Cuidado tiene que establecer el informe");
 		e.printStackTrace();
 	}
-	
-
-
+	*/
 }
 }
 	

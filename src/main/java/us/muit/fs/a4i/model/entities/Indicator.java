@@ -21,6 +21,14 @@ public class Indicator<T> {
 	protected String name;
 	protected T value;
 	protected String unit;
+	protected State state;
+
+	
+	public enum State{
+		OK,
+		WARNING,
+		CRITICAL
+	};
 	
 	private Indicator(IndicatorBuilder<T> builder){
 		
@@ -30,6 +38,7 @@ public class Indicator<T> {
 		this.source=builder.source;
 		this.unit=builder.unit;
 		this.date=builder.date;
+		this.state=builder.state;
 	}
 	public String getDescription() {
 		return description;
@@ -53,6 +62,7 @@ public class Indicator<T> {
 		private T value;
 		private String source;
 		private String unit;
+		private State state;
 		public IndicatorBuilder(String indicatorName, T indicatorValue) {
 			this.name=indicatorName;
 			this.value=indicatorValue;
@@ -70,6 +80,10 @@ public class Indicator<T> {
 			this.unit=unit;
 			return this;
 		}
+		public IndicatorBuilder<T> state(State state){
+			this.state=state;
+			return this;
+		}
 		public Indicator<T> build(){
 			return new Indicator<T>(this);			
 		}
@@ -78,8 +92,14 @@ public class Indicator<T> {
 	public String toString() {
 		String info;
 		info="Indicador para "+description+", con valor=" + value + ", source=" + source
-				+ ", unit=" + unit +" fecha de cálculo=  "+ date;
+				+ ", unit=" + unit +" fecha de cálculo=  "+ date+" Estado= "+state;
 		return info;
+	}
+	public Date getDate() {
+		return date;
+	}
+	public String getSource() {
+		return source;
 	}
 	
 }

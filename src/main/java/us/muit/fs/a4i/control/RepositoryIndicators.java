@@ -19,12 +19,26 @@ public class RepositoryIndicators implements IndicatorsCalculator {
 	@Override
 	public void calcIndicator(String name, ReportI report) {
 		log.info("Calcula el indicador de nombre "+name);
+		/**
+		 * Tiene que mirar si están ya las métricas que necesita
+		 * Si están lo calcula
+		 * Si no están busca las métricas, las añade y lo calcula
+		 * 
+		 */
 		
 	}
-
+/**
+ * Calcula todos los indicadores definidos para un repositorio
+ * Recupera todas las métricas que necesite y que no estén en el informe y las añade al mismo
+ * 
+ */
 	@Override
-	public void calcAllIndicatos(ReportI report) {
-		log.info("Calcula todos los indicadores del repositorio");
+	public void calcAllIndicators(ReportI report) {
+		log.info("Calcula todos los indicadores del repositorio y los incluye en el informe");
 	}
-
+    private Indicator commitsPerUser(ReportI report) {
+    	Indicator indicator=null;
+    	
+    	return indicator;
+    }
 }

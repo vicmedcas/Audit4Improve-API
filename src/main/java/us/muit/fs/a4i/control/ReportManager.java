@@ -5,9 +5,9 @@ package us.muit.fs.a4i.control;
 
 import java.util.logging.Logger;
 
-import us.muit.fs.a4i.model.daos.exceptions.ReportNotDefinedException;
+import us.muit.fs.a4i.exceptions.ReportNotDefinedException;
 import us.muit.fs.a4i.model.entities.ReportI;
-import us.muit.fs.a4i.model.remote.RemoteBuilder;
+import us.muit.fs.a4i.model.remote.RemoteEnquirer;
 import us.muit.fs.a4i.persistence.PersistenceManager;
 import us.muit.fs.a4i.persistence.ReportFormater;
 
@@ -19,7 +19,7 @@ public class ReportManager implements ReportManagerI {
 	private static Logger log=Logger.getLogger(ReportManager.class.getName());
 	private ReportI report;
 	private PersistenceManager persister;
-	private RemoteBuilder builder;
+	private RemoteEnquirer builder;
 	private ReportFormater formater;
 	private IndicatorsCalculator calc;
 	private String entityId;
@@ -27,7 +27,7 @@ public class ReportManager implements ReportManagerI {
 	
 
 	@Override
-	public void setRemoteBuilder(RemoteBuilder remote) {
+	public void setRemoteBuilder(RemoteEnquirer remote) {
 		this.builder=remote;
 
 	}

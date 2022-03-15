@@ -1,7 +1,7 @@
 /**
  * 
  */
-package us.muit.fs.a4i.control;
+package us.muit.fs.a4i.test.control;
 
 
 
@@ -10,6 +10,8 @@ import us.muit.fs.a4i.model.remote.GitHubRepositoryEnquirer;
 
 import java.io.IOException;
 
+import us.muit.fs.a4i.control.Context;
+import us.muit.fs.a4i.control.ReportManagerI;
 import us.muit.fs.a4i.exceptions.ReportNotDefinedException;
 
 import us.muit.fs.a4i.model.entities.ReportI;

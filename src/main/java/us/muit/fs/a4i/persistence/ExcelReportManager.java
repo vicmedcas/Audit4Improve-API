@@ -32,14 +32,14 @@ import us.muit.fs.a4i.model.entities.ReportI;
 
 
 /**
- * <p>Clase que cotendrán las funciones de manejo de excel comunes al manejo de cualquier informe<p>
+ * <p>Clase que cotendrán las funciones de manejo de excel comunes al manejo de cualquier informe</p>
  * <p>Se utiliza la API apachePOI para manejar los ficheros excel</p>
  * <p>Las primeras versiones se centran en la escritura</p>
- * <p>Política de informes: un informe es una hoja de un documento excel, identificada con el id del informe
+ * <p>Política de informes: un informe es una hoja de un documento excel, identificada con el id del informe</p>
  * <p>Este Gestor tiene los métodos para obtener la hoja y persistirla</p>
  * <p>Si la hoja existía la recupera y se añadirá sobre ella, no se elimina lo anterior, si no existía se crea nueva</p>
  * @author Isabel Román
- * @param <T>
+ * 
  *
  */
 public class ExcelReportManager implements PersistenceManager, FileManager{

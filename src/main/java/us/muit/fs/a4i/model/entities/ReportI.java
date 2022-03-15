@@ -8,6 +8,7 @@ import us.muit.fs.a4i.control.IndicatorsCalculator;
 public interface ReportI {
 	
 	Metric getMetricByName(String name);
+	
 	Collection<Metric> getAllMetrics();
 
 	void addMetric(Metric met);
@@ -16,7 +17,7 @@ public interface ReportI {
 
 	void addIndicator(Indicator ind);
 
-	void calcIndicator(String name,ReportI report);
+	void calcIndicator(String name);
 
 	void setId(String id);
 

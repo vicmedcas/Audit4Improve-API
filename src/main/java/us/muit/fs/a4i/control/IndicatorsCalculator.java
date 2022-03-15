@@ -15,15 +15,15 @@ import us.muit.fs.a4i.model.entities.ReportI;
  */
 public interface IndicatorsCalculator {
 	/**
-	 * Calcula el indicador con el nombre que se pasa
-	 * Si las métricas que necesita no están en el informe las busca y las añade
-	 * @param name
-	 * @param report
+	 * <p>Calcula el indicador con el nombre que se pasa
+	 * Si las métricas que necesita no están en el informe las busca y las añade</p>
+	 * @param name Nombre del indicador a cálcular
+	 * @param report Informe sobre el que realizar el cálculo
 	 */
 	public void calcIndicator(String name,ReportI report);
 	/**
-	 * Calcula todos los indicadores descritos
-	 * @param report
+	 * <p>Calcula todos los indicadores establecidos</p>
+	 * @param report Informe sobre el que realizar el cálculo
 	 */
 	public void calcAllIndicators(ReportI report);
 }

@@ -31,9 +31,9 @@ public class Report implements ReportI {
 	
 	/**
 	 * <p>Tipos de informes, puede necesitarse cuando los algoritmos de cálculo de indicadores difieran según el tipo de informe</p>
-	 * @author Isabel Román
-	 *
+	 * 
 	 */
+	
 	public static enum Type{
 	    	REPOSITORY,
 	    	DEVELOPER,
@@ -121,7 +121,7 @@ public class Report implements ReportI {
 	 * <p>Calcula el indicador solicitado<p>
 	 */
 	@Override
-	public void calcIndicator(String name,ReportI report) {
+	public void calcIndicator(String name) {
 		calc.calcIndicator(name, this);
 	}
     @Override

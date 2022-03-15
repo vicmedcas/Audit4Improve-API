@@ -26,7 +26,10 @@ import us.muit.fs.a4i.model.entities.ReportI;
  */
 public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	private static Logger log = Logger.getLogger(GitHubRepositoryEnquirer.class.getName());
-	
+	/**
+	 * <p>Constructor</p>
+	 */
+
 	public GitHubRepositoryEnquirer() {
 		super();
 		metricNames.add("subscribers");
@@ -36,7 +39,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 
 	@Override
 	public ReportI buildReport(String repositoryId) {
-		ReportI myRepo=null;
+		ReportI myRepo = null;
 		log.info("Invocado el método que construye un objeto RepositoryReport");
 		/**
 		 * <p>
@@ -68,7 +71,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 			 */
 
 			MetricBuilder<Integer> subscribers = new Metric.MetricBuilder<Integer>("subscribers",
-			remoteRepo.getSubscribersCount());
+					remoteRepo.getSubscribersCount());
 			subscribers.description("Número de suscriptores, watchers en la web").unit("subscribers").source("GitHub");
 			myRepo.addMetric(subscribers.build());
 			log.info("Añadida métrica suscriptores " + subscribers);
@@ -132,125 +135,142 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 			totalDeletions.source("GitHub, calculada")
 					.description("Suma el total de borrados desde que el repositorio se creó");
 			myRepo.addMetric(totalDeletions.build());
-			
-			
+
 		} catch (Exception e) {
 			log.severe("Problemas en la conexión " + e);
 		}
 
 		return myRepo;
 	}
+
 	/**
 	 * Permite consultar desde fuera una métrica del repositorio indicado
 	 */
 
 	@Override
-	public Metric getMetric(String metricName, String repositoryId) throws MetricException {	
+	public Metric getMetric(String metricName, String repositoryId) throws MetricException {
 		GHRepository remoteRepo;
-		
+
 		GitHub gb = getConnection();
 		try {
 			remoteRepo = gb.getRepository(repositoryId);
 		} catch (Exception e) {
 			e.printStackTrace();
-			throw new MetricException("No se puede acceder al repositorio remoto "+repositoryId+" para recuperarlo");
+			throw new MetricException(
+					"No se puede acceder al repositorio remoto " + repositoryId + " para recuperarlo");
 		}
-		
-		return getMetric(metricName,remoteRepo);
+
+		return getMetric(metricName, remoteRepo);
 	}
-	
-	private Metric getMetric(String metricName, GHRepository remoteRepo) throws MetricException {		
+/**
+ * <p>Crea la métrica solicitada consultando el repositorio remoto que se pasa como parámetro</p>
+ * @param metricName Métrica solicitada
+ * @param remoteRepo Repositorio remoto
+ * @return La métrica creada
+ * @throws MetricException Si la métrica no está definida se lanzará una excepción
+ */
+	private Metric getMetric(String metricName, GHRepository remoteRepo) throws MetricException {
 		Metric metric;
-		if(remoteRepo==null) {
+		if (remoteRepo == null) {
 			throw new MetricException("Intenta obtener una métrica sin haber obtenido los datos del repositorio");
 		}
-		switch (metricName){
+		switch (metricName) {
 		case "totalAdditions":
-			metric=getTotalAdditions(remoteRepo);
+			metric = getTotalAdditions(remoteRepo);
 			break;
 		case "totalDeletions":
-			metric=getTotalDeletions(remoteRepo);
+			metric = getTotalDeletions(remoteRepo);
 			break;
-	    default:
-	    	throw new MetricException("La métrica "+metricName+" no está definida para un repositorio");
+		default:
+			throw new MetricException("La métrica " + metricName + " no está definida para un repositorio");
 		}
-		
+
 		return metric;
 	}
 
-	/* A partir de aquí los algoritmos específicoso para hacer las consultas de cada métrica*/
-	 
+	/*
+	 * A partir de aquí los algoritmos específicoso para hacer las consultas de cada
+	 * métrica
+	 */
+
 	/**
-	 * <p>Obtención del número total de adiciones al repositorio</p>
-	 * @param remoteRepo
-	 * @return
+	 * <p>
+	 * Obtención del número total de adiciones al repositorio
+	 * </p>
+	 * 
+	 * @param remoteRepo el repositorio remoto sobre el que consultar
+	 * @return la métrica con el número total de adiciones desde el inicio
 	 */
 	private Metric getTotalAdditions(GHRepository remoteRepo) {
-		Metric metric=null;
-	
+		Metric metric = null;
+
 		GHRepositoryStatistics data = remoteRepo.getStatistics();
 		List<CodeFrequency> codeFreq;
 		try {
 			codeFreq = data.getCodeFrequency();
-		
+
 			int additions = 0;
-		
+
 			for (CodeFrequency freq : codeFreq) {
 
-			if (freq.getAdditions() != 0) {
-				Date fecha = new Date((long) freq.getWeekTimestamp() * 1000);
-				log.info("Fecha modificaciones " + fecha);
-				additions += freq.getAdditions();
-				
+				if (freq.getAdditions() != 0) {
+					Date fecha = new Date((long) freq.getWeekTimestamp() * 1000);
+					log.info("Fecha modificaciones " + fecha);
+					additions += freq.getAdditions();
+
+				}
 			}
-		}
-		MetricBuilder<Integer> totalAdditions = new Metric.MetricBuilder<Integer>("totalAdditions", additions);
-		totalAdditions.source("GitHub, calculada")
-				.description("Suma el total de adiciones desde que el repositorio se creó");
-		metric=totalAdditions.build();
-		
+			MetricBuilder<Integer> totalAdditions = new Metric.MetricBuilder<Integer>("totalAdditions", additions);
+			totalAdditions.source("GitHub, calculada")
+					.description("Suma el total de adiciones desde que el repositorio se creó");
+			metric = totalAdditions.build();
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return metric;
-		
+
 	}
+
 	/**
-	 * <p>Obtención del número total de eliminaciones del repositorio</p>
-	 * @param remoteRepo
-	 * @return
+	 * <p>
+	 * Obtención del número total de eliminaciones del repositorio
+	 * </p>
+	 * 
+	 * @param remoteRepo el repositorio remoto sobre el que consultar
+	 * @return la métrica con el número total de eliminaciones desde el inicio
 	 */
 	private Metric getTotalDeletions(GHRepository remoteRepo) {
-		Metric metric=null;
-	
+		Metric metric = null;
+
 		GHRepositoryStatistics data = remoteRepo.getStatistics();
 		List<CodeFrequency> codeFreq;
 		try {
 			codeFreq = data.getCodeFrequency();
-		
+
 			int deletions = 0;
-		
+
 			for (CodeFrequency freq : codeFreq) {
 
-			if (freq.getDeletions() != 0) {
-				Date fecha = new Date((long) freq.getWeekTimestamp() * 1000);
-				log.info("Fecha modificaciones " + fecha);
-				deletions += freq.getAdditions();
-				
+				if (freq.getDeletions() != 0) {
+					Date fecha = new Date((long) freq.getWeekTimestamp() * 1000);
+					log.info("Fecha modificaciones " + fecha);
+					deletions += freq.getAdditions();
+
+				}
 			}
-		}
-		MetricBuilder<Integer> totalDeletions = new Metric.MetricBuilder<Integer>("totalDeletions", deletions);
-		totalDeletions.source("GitHub, calculada")
-				.description("Suma el total de eliminaciones desde que el repositorio se creó");
-		metric=totalDeletions.build();
-		
+			MetricBuilder<Integer> totalDeletions = new Metric.MetricBuilder<Integer>("totalDeletions", deletions);
+			totalDeletions.source("GitHub, calculada")
+					.description("Suma el total de eliminaciones desde que el repositorio se creó");
+			metric = totalDeletions.build();
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return metric;
-		
+
 	}
-    
+
 }

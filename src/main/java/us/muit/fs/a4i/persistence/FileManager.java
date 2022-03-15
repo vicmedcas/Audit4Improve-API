@@ -17,8 +17,8 @@ public interface FileManager {
 	 */
 	public void setPath(String path);
 	/**
-	 * <p>Establece la localización del fichero</p>
-	 * @param path localización del fichero de informe
+	 * <p>Establece el nombre que tendrá el fichero del informe</p>
+	 * @param name nombre del fichero del informe
 	 */
 	public void setName(String name);
 }

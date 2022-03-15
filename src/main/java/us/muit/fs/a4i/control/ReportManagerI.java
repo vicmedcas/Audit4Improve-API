@@ -19,24 +19,24 @@ public interface ReportManagerI {
     
 
 	public ReportI getReport();
-	/**
-	 * <p>Establece el formateador a usar</p>
-	 * @param El gestor de formato a utilizar
-	 */
+	
 	public void setRemoteBuilder(RemoteEnquirer remote);
 	public void setPersistenceManager(PersistenceManager persistence);
+	/**
+	 * <p>Establece el formateador a usar</p>
+	 * @param formater El gestor de formato a utilizar
+	 */
 	public void setFormater(ReportFormater formater);
 	public void setIndicatorCalc(IndicatorsCalculator calc);
 	
 	/**
 	 * <p>Persiste el informe que recibe como parámetro, según las reglas del gestor de persistencia y formateador establecidos</p>
-	 * @param report
+	 * @param report <p>El informe a persistir</p>
 	 */
 	public void saveReport(ReportI report);
 	/**
 	 * <p>Establecer el informe que se quiere crear</p>
-	 * @param report
-	 * @throws ReportNotDefinedException 
+	 * @throws ReportNotDefinedException Si no se había establecido un informe
 	 */
 	public void save() throws ReportNotDefinedException;
 	
@@ -49,7 +49,7 @@ public interface ReportManagerI {
 	public ReportI createReport(String id);
 	/**
 	 * <p>Borra el informe pasado como parámetro, según las reglas establecidas por el gestor de persistencia</p>
-	 * @param report
+	 * @param report El informe que se quiere borrar
 	 */
 	public void deleteReport(ReportI report);
 	/**

@@ -22,7 +22,7 @@ public interface RemoteEnquirer{
 	/**
 	 * <p>Construye el informe por defecto sobre la entidad indicada</p>
 	 * @param entityId Identificador unívoco en el remoto de la entidad sobre la que se quiere informar.
-	 * @return
+	 * @return El nuevo informe construido
 	 */
 	
 	public ReportI buildReport(String entityId);
@@ -30,14 +30,14 @@ public interface RemoteEnquirer{
 	 * <p>Consulta una métrica específica para una entidad concreta</p>
 	 * @param metricName métrica solicitada
 	 * @param entityId Identificador unívoco en el remoto de la entidad sobre la que se consulta
-	 * @return
-	 * @throws MetricException
+	 * @return La nueva métrica construida tras la consulta al remoto
+	 * @throws MetricException Si la métrica no está definida
 	 */
 	public Metric getMetric(String metricName,String entityId) throws MetricException;
 
 	/**
 	 * <p>Devuelve las métricas que puede obtener del remoto</p>
-	 * @return
+	 * @return El listado de los nombres de métricas definidas
 	 */
 	public List<String> getAvailableMetrics();
 }

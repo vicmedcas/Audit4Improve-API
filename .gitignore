@@ -1,0 +1,43 @@
+#Esta configuración es para que en esta rama no se suba nada más que la documentación de interés del proyecto
+#O recursos asociados que interesa mantener separados (especialmente las imágenes)
+# Ignore Gradle project-specific cache directory
+.gradle
+#Ignoro los directorios que crea el IDE en el espacio de trabajo, que no se suba a git
+.settings
+.metadata
+.classpath
+.project
+.gitattributes
+
+# Ignore Gradle build output directory
+build
+
+#Ignora también la carpeta de código
+src
+
+#Ignora también gradle/wrapper
+gradle/wrapper
+
+# Ignora la carpeta de compilados
+bin
+
+# Ignorar el fichero de propiedades de gradle, porque tienen datos personales
+gradle.properties
+
+
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# Package Files #
+*.jar
+#excluso el gradle wrapper de esta regla, sí quiero controlarlo
+
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar

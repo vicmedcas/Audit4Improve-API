@@ -1,3 +1,8 @@
+---
+theme: jekyll-theme-cayman
+author: Isabel Román
+email: irm@us.es
+---      
 ![Imagen](https://avatars.githubusercontent.com/u/71695310?s=400&amp;u=ddcba7460f1df463bbbb6e8fd6b5557e64fb114c&amp;v=4)
 # Audit4Improve-API
 
@@ -29,4 +34,4 @@ Este proyecto se utiliza como **ejemplo** en la asignatura [Factorías de Softwa
 5. [Paquetes GitHub](https://docs.github.com/en/packages)
 6. [Páginas GitHub](https://docs.github.com/en/pages)
 
-##[Capacidades Audit4Improve](https://mit-fs.github.io/Audit4Improve-API/documentation/)
+## [Capacidades Audit4Improve](https://mit-fs.github.io/Audit4Improve-API/documentation/)

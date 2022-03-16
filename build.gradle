@@ -22,8 +22,9 @@ tasks.withType(JavaCompile) {
     options.deprecation = true
     options.encoding = 'ISO-8859-1'
 }
+
 tasks.withType(Javadoc){
-    
+  
     description = "Genera la documentación"
     //indicar que la codificación es ISO
     options.encoding = 'ISO-8859-1'
@@ -33,8 +34,10 @@ tasks.withType(Javadoc){
     options.use = true
     options.memberLevel = JavadocMemberLevel.PROTECTED
     options.footer = "MIT-FS: Curso 2021/22"
-    title = "Supervisor"
+    title = "Audit4Improve-API"    
 }
+
+
 
 repositories {
     // Use Maven Central for resolving dependencies.

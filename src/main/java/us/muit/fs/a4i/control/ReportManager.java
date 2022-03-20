@@ -9,7 +9,7 @@ import us.muit.fs.a4i.exceptions.ReportNotDefinedException;
 import us.muit.fs.a4i.model.entities.ReportI;
 import us.muit.fs.a4i.model.remote.RemoteEnquirer;
 import us.muit.fs.a4i.persistence.PersistenceManager;
-import us.muit.fs.a4i.persistence.ReportFormater;
+import us.muit.fs.a4i.persistence.ReportFormaterI;
 
 /**
  * @author isa
@@ -19,16 +19,16 @@ public class ReportManager implements ReportManagerI {
 	private static Logger log=Logger.getLogger(ReportManager.class.getName());
 	private ReportI report;
 	private PersistenceManager persister;
-	private RemoteEnquirer builder;
-	private ReportFormater formater;
+	private RemoteEnquirer enquirer;
+	private ReportFormaterI formater;
 	private IndicatorsCalculator calc;
 	private String entityId;
 
 	
 
 	@Override
-	public void setRemoteBuilder(RemoteEnquirer remote) {
-		this.builder=remote;
+	public void setRemoteEnquirer(RemoteEnquirer remote) {
+		this.enquirer=remote;
 
 	}
 
@@ -39,7 +39,7 @@ public class ReportManager implements ReportManagerI {
 	}
 
 	@Override
-	public void setFormater(ReportFormater formater) {
+	public void setFormater(ReportFormaterI formater) {
 		this.formater=formater;
 
 	}
@@ -69,12 +69,10 @@ public class ReportManager implements ReportManagerI {
 		}else throw new ReportNotDefinedException();
 		
 	}
-    /**
-     * Crea un informe de la entidad que se pasa como parámetro y se guarda en la referencia en el gestor
-     */
+   
 	@Override
 	public ReportI createReport(String entityId) {
-		report=builder.buildReport(entityId);
+		report=enquirer.buildReport(entityId);
 		return report;
 	}
 

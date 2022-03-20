@@ -20,7 +20,7 @@ import us.muit.fs.a4i.model.entities.ReportI;
 public interface RemoteEnquirer{
 	
 	/**
-	 * <p>Construye el informe por defecto sobre la entidad indicada</p>
+	 * <p>Construye el informe sobre la entidad indicada con las métricas por defecto</p>
 	 * @param entityId Identificador unívoco en el remoto de la entidad sobre la que se quiere informar.
 	 * @return El nuevo informe construido
 	 */
@@ -36,7 +36,7 @@ public interface RemoteEnquirer{
 	public Metric getMetric(String metricName,String entityId) throws MetricException;
 
 	/**
-	 * <p>Devuelve las métricas que puede obtener del remoto</p>
+	 * <p>Devuelve las métricas que el objeto RemoteEnquirer concreto puede obtener del servidor remoto</p>
 	 * @return El listado de los nombres de métricas definidas
 	 */
 	public List<String> getAvailableMetrics();

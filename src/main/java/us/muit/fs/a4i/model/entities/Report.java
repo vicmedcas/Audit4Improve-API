@@ -17,6 +17,7 @@ import us.muit.fs.a4i.control.IndicatorsCalculator;
  * @author Isabel Román
  *
  */
+
 public class Report implements ReportI {
 	private static Logger log=Logger.getLogger(Report.class.getName());
 	/**

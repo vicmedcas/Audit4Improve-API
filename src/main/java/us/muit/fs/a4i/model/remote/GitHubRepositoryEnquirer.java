@@ -77,7 +77,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 			log.info("Añadida métrica suscriptores " + subscribers);
 
 			MetricBuilder<Integer> forks = new Metric.MetricBuilder<Integer>("forks", remoteRepo.getForksCount());
-			forks.description("Número de forks, no son los foks de la web").source("GitHub");
+			forks.description("Número de forks, no son los forks de la web").source("GitHub");
 			myRepo.addMetric(forks.build());
 			log.info("Añadida métrica forks " + forks);
 
@@ -200,8 +200,9 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * 
 	 * @param remoteRepo el repositorio remoto sobre el que consultar
 	 * @return la métrica con el número total de adiciones desde el inicio
+	 * @throws MetricException Intenta crear una métrica no definida
 	 */
-	private Metric getTotalAdditions(GHRepository remoteRepo) {
+	private Metric getTotalAdditions(GHRepository remoteRepo) throws MetricException {
 		Metric metric = null;
 
 		GHRepositoryStatistics data = remoteRepo.getStatistics();
@@ -240,8 +241,9 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 	 * 
 	 * @param remoteRepo el repositorio remoto sobre el que consultar
 	 * @return la métrica con el número total de eliminaciones desde el inicio
+	 * @throws MetricException Intenta crear una métrica no definida
 	 */
-	private Metric getTotalDeletions(GHRepository remoteRepo) {
+	private Metric getTotalDeletions(GHRepository remoteRepo) throws MetricException {
 		Metric metric = null;
 
 		GHRepositoryStatistics data = remoteRepo.getStatistics();

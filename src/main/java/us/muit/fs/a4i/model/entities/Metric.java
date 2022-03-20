@@ -3,11 +3,16 @@
  */
 package us.muit.fs.a4i.model.entities;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDateTime;
 
 import java.time.ZoneOffset;
 import java.util.Date;
 import java.util.logging.Logger;
+
+import us.muit.fs.a4i.config.Context;
+import us.muit.fs.a4i.exceptions.MetricException;
 
 /**
  * @author Isabel Román
@@ -15,13 +20,21 @@ import java.util.logging.Logger;
  */
 public class Metric<T> {
 	private static Logger log=Logger.getLogger(Metric.class.getName());
-	private String description;
+	/**
+	 * Obligatorio
+	 */
 	private String name;
 	/**
-	 * Fecha en la que se tomó la medida
+	 * Obligatorio
+	 */
+	private T value;
+	/**
+	 * Obligatorio
+	 * Fecha en la que se tomó la medida (por defecto cuando se crea el objeto)
 	 */
 	private Date date;
-	private T value;
+	
+	private String description;
 	private String source;
 	private String unit;
 	
@@ -79,10 +92,22 @@ public class Metric<T> {
 		private T value;
 		private String source;
 		private String unit;
-		public MetricBuilder(String metricName, T metricValue) {
-			this.name=metricName;
-			this.value=metricValue;
-			this.date=Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC));
+		public MetricBuilder(String metricName, T metricValue) throws MetricException {
+			//el nombre incluye java.lang que hay que eliminar, hay que quedarse sólo con lo que va detrás del último punto o meter en el fichero el nombre completo
+			log.info("Verifico La métrica de nombre "+metricName+" con valor de tipo "+metricValue.getClass().getName());
+			try {
+			if(Context.getContext().getChecker().definedMetric(metricName,metricValue.getClass().getName())) {				
+				this.name=metricName;
+				this.value=metricValue;			
+				this.date=Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC));
+			}else {
+				throw new MetricException("Métrica "+metricName+" no definida o tipo "+metricValue.getClass().getName()+" incorrecto");
+			}
+			}catch(IOException e) {
+				throw new MetricException("El fichero de configuración de métricas no se puede abrir");
+			}
+			
+			
 		}
 		public MetricBuilder<T> description(String description){
 			this.description=description;

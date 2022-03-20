@@ -7,26 +7,41 @@ import us.muit.fs.a4i.persistence.PersistenceManager;
 import us.muit.fs.a4i.exceptions.ReportNotDefinedException;
 import us.muit.fs.a4i.model.entities.ReportI;
 import us.muit.fs.a4i.model.remote.RemoteEnquirer;
-import us.muit.fs.a4i.persistence.ReportFormater;
+import us.muit.fs.a4i.persistence.ReportFormaterI;
 
 /**
- * <p>Interfaz con los métodos disponibles para manejar informes, independientemente del sistema de persistencia utilizado</p>
- * <p>En las primeras versiones sólo se guardarán los informes a local, posteriormente también se podrán leer</p>
+ * <p>Interfaz con los métodos disponibles para manejar informes</p>
+ * <p>No depende del sistema de persistencia utilizado</p>
+ * <p>No depende del tipo de remoto del que se obtienen las métricas</p>
+ * <p>No depende del modo de calcular los indicadores</p> 
+ * <p>En las primeras versiones sólo se leen desde remotos y se guardarán los informes localmente</p>
+ * <p>Versiones posteriores permitirán leer y modificar informes</p>
  * @author Isabel Román
  *
  */
 public interface ReportManagerI {
     
-
+    /**
+     * <p>Recupera el informe que se están manejando</p>
+     * @return
+     */
 	public ReportI getReport();
+	/**
+	 * <p>Establece el objeto que se usará para consultar al servidor remoto y obtener las métricas</p>
+	 * @param remote Objeto RemoteEnquirer que consultará al servidor remoto
+	 */
 	
-	public void setRemoteBuilder(RemoteEnquirer remote);
+	public void setRemoteEnquirer(RemoteEnquirer remote);
+	/**
+	 * <p>Establece el objeto PersistenceManager que se encargará de guardar el informe localmente</p>
+	 * @param persistence Objeto PersistenceManager concreto
+	 */
 	public void setPersistenceManager(PersistenceManager persistence);
 	/**
 	 * <p>Establece el formateador a usar</p>
 	 * @param formater El gestor de formato a utilizar
 	 */
-	public void setFormater(ReportFormater formater);
+	public void setFormater(ReportFormaterI formater);
 	public void setIndicatorCalc(IndicatorsCalculator calc);
 	
 	/**

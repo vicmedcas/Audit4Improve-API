@@ -47,7 +47,7 @@ public class ExcelReportManager implements PersistenceManager, FileManager{
 	/**
 	 * <p>Referencia al gestor de estilo que se va a utilizar</p>
 	 */
-	protected ReportFormater formater;
+	protected ReportFormaterI formater;
 	ReportI report;
 	FileInputStream inputStream=null;
 	
@@ -71,7 +71,7 @@ public class ExcelReportManager implements PersistenceManager, FileManager{
 
 
 	@Override
-	public void setFormater(ReportFormater formater) {
+	public void setFormater(ReportFormaterI formater) {
 		log.info("Establece el formateador");
 		this.formater=formater;
 		
@@ -185,6 +185,7 @@ public class ExcelReportManager implements PersistenceManager, FileManager{
 	   Row row=sheet.createRow(rowIndex);
 	   log.info("Indice de fila nueva "+rowIndex);
 	   int cellIndex=0;
+	   //Aquí debería incorporar el formato de fuente en las celdas
 	   row.createCell(cellIndex++).setCellValue(metric.getName());
 	   row.createCell(cellIndex++).setCellValue(metric.getValue().toString());
 	   row.createCell(cellIndex++).setCellValue(metric.getUnit());
@@ -204,6 +205,7 @@ public class ExcelReportManager implements PersistenceManager, FileManager{
 	   Row row=sheet.createRow(rowIndex);
 	   log.info("Indice de fila nueva "+rowIndex);
 	   int cellIndex=0;
+	   //Aquí debería indicar el formato de fuente en las celdas, que dependerá del estado del índice
 	   row.createCell(cellIndex++).setCellValue(indicator.getName());
 	   row.createCell(cellIndex++).setCellValue(indicator.getValue().toString());
 

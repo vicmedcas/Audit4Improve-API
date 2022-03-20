@@ -1,0 +1,40 @@
+{
+	"metrics": [{
+			"name": "subscribers",
+			"type": "java.lang.Integer",
+			"description": "Número de suscriptores, watchers en la web",
+			"unit": "subscribers"
+		},
+		{
+			"name": "forks",
+			"type": "java.lang.Integer",
+			"description": "Número de forks, no son los forks de la web",
+			"unit": "forks"
+		},
+		{
+			"name": "watchers",
+			"type": "java.lang.Integer",
+			"description": "Observadores, en la web aparece com forks",
+			"unit": "watchers"
+		}
+	],
+	"indicators": [{
+			"name": "subscribers",
+			"type": "java.lang.Integer",
+			"description": "Número de suscriptores, watchers en la web",
+			"unit": "subscribers"
+		},
+		{
+			"name": "forks",
+			"type": "java.lang.Integer",
+			"description": "Número de forks, no son los forks de la web",
+			"unit": "forks"
+		},
+		{
+			"name": "watchers",
+			"type": "java.lang.Integer",
+			"description": "Observadores, en la web aparece com forks",
+			"unit": "watchers"
+		}
+	]
+}

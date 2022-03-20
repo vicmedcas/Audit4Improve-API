@@ -22,7 +22,7 @@ public interface PersistenceManager {
 	 * <p>Establece el elemento que establece el formato</p>
 	 * @param formater Elemento que maneja las características de formato
 	 */
-	void setFormater(ReportFormater formater);
+	void setFormater(ReportFormaterI formater);
 	
 	/**
 	 * <p>Persiste el informe</p>

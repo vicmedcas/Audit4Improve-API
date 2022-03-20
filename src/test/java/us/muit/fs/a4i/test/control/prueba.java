@@ -10,7 +10,7 @@ import us.muit.fs.a4i.model.remote.GitHubRepositoryEnquirer;
 
 import java.io.IOException;
 
-import us.muit.fs.a4i.control.Context;
+import us.muit.fs.a4i.config.Context;
 import us.muit.fs.a4i.control.ReportManagerI;
 import us.muit.fs.a4i.exceptions.ReportNotDefinedException;
 
@@ -36,8 +36,8 @@ public class prueba {
 	PersistenceManager persister;
 	RemoteEnquirer builder;
 	try {
-		System.out.println("Listado de propiedades disponibles "+Context.getPropertiesNames());
-		System.out.println(Context.getIndicatorsFile());
+		System.out.println("Listado de propiedades disponibles "+Context.getContext().getPropertiesNames());
+		
 	} catch (IOException e1) {
 		// TODO Auto-generated catch block
 		e1.printStackTrace();

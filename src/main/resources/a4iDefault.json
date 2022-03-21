@@ -16,6 +16,24 @@
 			"type": "java.lang.Integer",
 			"description": "Observadores, en la web aparece com forks",
 			"unit": "watchers"
+		},
+		{
+			"name": "issues",
+			"type": "java.lang.Integer",
+			"description": "Tareas sin finalizar en el repositorio",
+			"unit": "issues"
+		},
+		{
+			"name": "stars",
+			"type": "java.lang.Integer",
+			"description": "Estrellas concedidas",
+			"unit": "stars"
+		},
+		{
+			"name": "creation",
+			"type": "java.util.Date",
+			"description": "Fecha de creación del calendario",
+			"unit": "date"
 		}
 	],
 	"indicators": [{

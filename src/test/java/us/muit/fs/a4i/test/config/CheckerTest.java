@@ -15,15 +15,15 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import us.muit.fs.a4i.config.Checker;
-import us.muit.fs.a4i.config.Context;
 
 /**
  * Test de la clase Checker que verifica las métricas e indicadores
+ * 
  * @author Isabel Román
  *
  */
 class CheckerTest {
-	private static Logger log=Logger.getLogger(CheckerTest.class.getName());
+	private static Logger log = Logger.getLogger(CheckerTest.class.getName());
 	static Checker underTest;
 
 	/**
@@ -31,8 +31,7 @@ class CheckerTest {
 	 */
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
-		
-	
+
 	}
 
 	/**
@@ -58,19 +57,23 @@ class CheckerTest {
 	}
 
 	/**
-	 * Test method for {@link us.muit.fs.a4i.control.Checker#definedMetric(java.lang.String)}.
+	 * Test method for
+	 * {@link us.muit.fs.a4i.control.Checker#definedMetric(java.lang.String)}.
 	 */
 	@Test
 	void testDefinedMetric() {
-		Integer valueOK=Integer.valueOf(3);
-		String valueKO="KO";
+		Integer valueOK = Integer.valueOf(3);
+		String valueKO = "KO";
 		log.info("Busco la métrica kkk");
 		try {
-			assertFalse(underTest.definedMetric("kkk",valueOK.getClass().getName()),"Debería ser falso, la métrica no está definida");
-		
+			assertNull(underTest.definedMetric("kkk", valueOK.getClass().getName()),
+					"Debería ser nulo, la métrica no está definida");
+
 			log.info("Busco la métrica watchers");
-			assertTrue(underTest.definedMetric("watchers",valueOK.getClass().getName()),"Debería ser true, la métrica está definida");
-			assertFalse(underTest.definedMetric("watchers",valueKO.getClass().getName()),"Debería ser false, la métrica está definida para Integer");
+			assertNotNull(underTest.definedMetric("watchers", valueOK.getClass().getName()),
+					"Debería devolver un hashmap, la métrica está definida");
+			assertNull(underTest.definedMetric("watchers", valueKO.getClass().getName()),
+					"Debería ser nulo, la métrica está definida para Integer");
 		} catch (FileNotFoundException e) {
 			fail("El fichero está en la carpeta resources");
 			e.printStackTrace();
@@ -79,44 +82,46 @@ class CheckerTest {
 		try {
 			underTest.definedMetric("kkk", valueOK.getClass().getName());
 			fail("Debería lanzar una excepción porque intenta buscar en un fichero que no existe");
-		}catch(FileNotFoundException e){
+		} catch (FileNotFoundException e) {
 			log.info("Lanza la excepción adecuada, FileNotFoud");
-		}catch(Exception e) {
-			fail("Lanza la excepción equivocada "+e);
+		} catch (Exception e) {
+			fail("Lanza la excepción equivocada " + e);
 		}
-			
-		}
-		
-	
+
+	}
 
 	/**
-	 * Test method for {@link us.muit.fs.a4i.control.Checker#definedIndicator(java.lang.String)}.
+	 * Test method for
+	 * {@link us.muit.fs.a4i.control.Checker#definedIndicator(java.lang.String)}.
 	 */
 	@Test
 	void testDefinedIndicator() {
-		Integer valueOK=Integer.valueOf(3);
-		String valueKO="KO";
-	
+		Integer valueOK = Integer.valueOf(3);
+		String valueKO = "KO";
+
 		try {
-		
-		log.info("Busco el indicador kkk");
-		assertFalse(underTest.definedIndicator("kkk", valueOK.getClass().getName()),"Debería ser falso, el indicador no está definido");
-		log.info("Busco el indicador watchers");
-		assertTrue(underTest.definedIndicator("watchers",valueOK.getClass().getName()),"Debería ser true, el indicador está definido para valor de tipo Integer");
-		assertFalse(underTest.definedIndicator("watchers",valueKO.getClass().getName()),"Debería ser false, el indicador está definido para valor de tipo Integer");
-	   }catch (FileNotFoundException e) {
-		fail("El fichero está en la carpeta resources y no se ha definido uno para la aplicación");
-		e.printStackTrace();
-	    }
+
+			log.info("Busco el indicador kkk");
+			assertNull(underTest.definedIndicator("kkk", valueOK.getClass().getName()),
+					"Debería ser nulo, el indicador no está definido");
+			log.info("Busco el indicador watchers");
+			assertNotNull(underTest.definedIndicator("watchers", valueOK.getClass().getName()),
+					"Debería no se nulo, el indicador está definido para valor de tipo Integer");
+			assertNull(underTest.definedIndicator("watchers", valueKO.getClass().getName()),
+					"Debería ser nulo, el indicador está definido para valor de tipo Integer");
+		} catch (FileNotFoundException e) {
+			fail("El fichero está en la carpeta resources y no se ha definido uno para la aplicación");
+			e.printStackTrace();
+		}
 		underTest.setAppMetrics("pepe");
 		try {
 			underTest.definedIndicator("kkk", valueOK.getClass().getName());
 			fail("Debería lanzar una excepción porque intenta buscar en un fichero que no existe");
-		}catch(FileNotFoundException e){
+		} catch (FileNotFoundException e) {
 			log.info("Lanza la excepción adecuada, FileNotFoud");
-		}catch(Exception e) {
-			fail("Lanza la excepción equivocada "+e);
+		} catch (Exception e) {
+			fail("Lanza la excepción equivocada " + e);
 		}
-			
-		}
+
+	}
 }

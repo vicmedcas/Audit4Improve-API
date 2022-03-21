@@ -1,0 +1,10 @@
+/**
+ * Clases encargadas del contexto de aplicación
+ * Leen la configuración y la ponen disponible
+ * Manejan la configuración básica en ficheros simples leídos a Properties y la referida a métricas e indicadores disponibles en ficheros json
+ *
+ * @author Isabel Román
+ * @version 0.0
+ */
+package us.muit.fs.a4i.config;
+

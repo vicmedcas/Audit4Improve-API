@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 
 import java.time.ZoneOffset;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 import us.muit.fs.a4i.config.Context;
@@ -93,13 +94,20 @@ public class Metric<T> {
 		private String source;
 		private String unit;
 		public MetricBuilder(String metricName, T metricValue) throws MetricException {
-			//el nombre incluye java.lang que hay que eliminar, hay que quedarse sólo con lo que va detrás del último punto o meter en el fichero el nombre completo
+			HashMap<String,String> metricDefinition=null;
+			//el nombre incluye java.lang, si puede eliminar si se manipula la cadena
+			//hay que quedarse sólo con lo que va detrás del último punto o meter en el fichero el nombre completo
+			//Pero ¿y si se usan tipos definidos en otras librerías? usar el nombre completo "desambigua" mejor
 			log.info("Verifico La métrica de nombre "+metricName+" con valor de tipo "+metricValue.getClass().getName());
 			try {
-			if(Context.getContext().getChecker().definedMetric(metricName,metricValue.getClass().getName())) {				
+			metricDefinition=Context.getContext().getChecker().definedMetric(metricName,metricValue.getClass().getName());
+					
+			if(metricDefinition!=null) {				
 				this.name=metricName;
 				this.value=metricValue;			
 				this.date=Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC));
+				this.description=metricDefinition.get("description");
+				this.unit=metricDefinition.get("unit");
 			}else {
 				throw new MetricException("Métrica "+metricName+" no definida o tipo "+metricValue.getClass().getName()+" incorrecto");
 			}
@@ -125,6 +133,7 @@ public class Metric<T> {
 			return new Metric<T>(this);			
 		}
 	}
+	
 	@Override
 	public String toString() {
 		String info;

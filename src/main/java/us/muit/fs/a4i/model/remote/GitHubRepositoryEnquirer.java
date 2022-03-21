@@ -72,33 +72,33 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 
 			MetricBuilder<Integer> subscribers = new Metric.MetricBuilder<Integer>("subscribers",
 					remoteRepo.getSubscribersCount());
-			subscribers.description("Número de suscriptores, watchers en la web").unit("subscribers").source("GitHub");
+			subscribers.source("GitHub");
 			myRepo.addMetric(subscribers.build());
 			log.info("Añadida métrica suscriptores " + subscribers);
 
 			MetricBuilder<Integer> forks = new Metric.MetricBuilder<Integer>("forks", remoteRepo.getForksCount());
-			forks.description("Número de forks, no son los forks de la web").source("GitHub");
+			forks.source("GitHub");
 			myRepo.addMetric(forks.build());
 			log.info("Añadida métrica forks " + forks);
 
 			MetricBuilder<Integer> watchers = new Metric.MetricBuilder<Integer>("watchers",
 					remoteRepo.getWatchersCount());
-			watchers.description("Observadores, en la web aparece com forks").source("GitHub");
+			watchers.source("GitHub");
 			myRepo.addMetric(watchers.build());
 
 			MetricBuilder<Integer> stars = new Metric.MetricBuilder<Integer>("stars", remoteRepo.getStargazersCount());
-			stars.description("Estrellas otorgadas").source("GitHub");
+			stars.source("GitHub");
 			myRepo.addMetric(stars.build());
 
 			MetricBuilder<Integer> issues = new Metric.MetricBuilder<Integer>("issues", remoteRepo.getOpenIssueCount());
-			issues.source("GitHub").description("Número de tareas sin cerrar");
+			issues.source("GitHub");
 			myRepo.addMetric(issues.build());
 			/**
 			 * Métricas directas de tipo fecha
 			 */
 
 			MetricBuilder<Date> creation = new Metric.MetricBuilder<Date>("creation", remoteRepo.getCreatedAt());
-			creation.source("GitHub").description("Fecha de creación del repositorio");
+			creation.source("GitHub");
 			myRepo.addMetric(creation.build());
 
 			MetricBuilder<Date> push = new Metric.MetricBuilder<Date>("lastPush", remoteRepo.getPushedAt());

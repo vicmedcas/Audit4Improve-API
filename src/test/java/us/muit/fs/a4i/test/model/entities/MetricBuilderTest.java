@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
+import java.util.logging.Logger;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -16,16 +17,20 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import us.muit.fs.a4i.model.entities.Metric.MetricBuilder;
+
 import us.muit.fs.a4i.exceptions.MetricException;
 import us.muit.fs.a4i.model.entities.Metric;
 
 /**
- * <p>Test para probar el constructor de objetos Metric</p>
+ * <p>
+ * Test para probar el constructor de objetos Metric
+ * </p>
+ * 
  * @author Isabel Román
  *
  */
 class MetricBuilderTest {
-	MetricBuilder underTest;
+	private static Logger log = Logger.getLogger(MetricBuilderTest.class.getName());
 
 	/**
 	 * @throws java.lang.Exception
@@ -56,29 +61,54 @@ class MetricBuilderTest {
 	}
 
 	/**
-	 * Test para el constructo
-	 * Test method for {@link us.muit.fs.a4i.model.entities.Metric.MetricBuilder#MetricBuilder(java.lang.String, java.lang.Object)}.
+	 * Test para el constructo Test method for
+	 * {@link us.muit.fs.a4i.model.entities.Metric.MetricBuilder#MetricBuilder(java.lang.String, java.lang.Object)}.
 	 */
 	@Test
 	void testMetricBuilder() {
+		MetricBuilder underTest = null;
 		try {
-			underTest=new MetricBuilder<Integer>("watchers",33);
+			underTest = new MetricBuilder<Integer>("watchers", 33);
 		} catch (MetricException e) {
-			
+			fail("No debería haber saltado esta excepción");
 			e.printStackTrace();
 		}
-		Metric newMetric=underTest.build();
-		assertEquals("watchers",newMetric.getName(),"El nombre establecido no es correcto");
-		assertEquals(33,newMetric.getValue(),"El valor establecido no es correcto");
-		assertEquals(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)).toString(),newMetric.getDate().toString(),"La fecha establecida no es correcta");
-		assertNull(newMetric.getDescription(),"No debería contener ninguna descripción");
-		assertNull(newMetric.getSource(),"No debería contener la fuente");
-		assertNull(newMetric.getUnit(),"No debería incluir las unidades");
-		
+		Metric newMetric = underTest.build();
+		log.info("Métrica creada "+newMetric.toString());
+		assertEquals("watchers", newMetric.getName(), "El nombre establecido no es correcto");
+		assertEquals(33, newMetric.getValue(), "El valor establecido no es correcto");
+		assertEquals(Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC)).toString(),
+				newMetric.getDate().toString(), "La fecha establecida no es correcta");
+		assertEquals(newMetric.getDescription(), "Observadores, en la web aparece com forks","La descripción no coincide con la del fichero de configuración");
+		assertNull(newMetric.getSource(), "El origen no debería estar incluido");
+		assertEquals(newMetric.getUnit(),"watchers", "No debería incluir las unidades");
+		// A continuación se prueba que se hace verificación correcta del tipo de métrica
+		// Prueba un tipo que no se corresponde con el definido por la métrica
+		try {
+			underTest = new MetricBuilder<String>("watchers", "hola");
+			fail("Debería haber lanzado una excepción");
+		} catch (MetricException e) {
+			log.info("Lanza la excepción adecuada, MetricException");
+
+		} catch (Exception e) {
+			fail("La excepción capturada es " + e + " cuando se esperaba de tipo MetricException");
+		}
+		// Prueba una métrica que no existe
+		try {
+			underTest = new MetricBuilder<String>("pepe", "hola");
+			fail("Debería haber lanzado una excepción");
+		} catch (MetricException e) {
+			log.info("Lanza la excepción adecuada, MetricException");
+
+		} catch (Exception e) {
+			fail("La excepción capturada es " + e + " cuando se esperaba de tipo MetricException");
+		}
+
 	}
 
 	/**
-	 * Test method for {@link us.muit.fs.a4i.model.entities.Metric.MetricBuilder#description(java.lang.String)}.
+	 * Test method for
+	 * {@link us.muit.fs.a4i.model.entities.Metric.MetricBuilder#description(java.lang.String)}.
 	 */
 	@Test
 	void testDescription() {
@@ -86,7 +116,8 @@ class MetricBuilderTest {
 	}
 
 	/**
-	 * Test method for {@link us.muit.fs.a4i.model.entities.Metric.MetricBuilder#source(java.lang.String)}.
+	 * Test method for
+	 * {@link us.muit.fs.a4i.model.entities.Metric.MetricBuilder#source(java.lang.String)}.
 	 */
 	@Test
 	void testSource() {
@@ -94,7 +125,8 @@ class MetricBuilderTest {
 	}
 
 	/**
-	 * Test method for {@link us.muit.fs.a4i.model.entities.Metric.MetricBuilder#unit(java.lang.String)}.
+	 * Test method for
+	 * {@link us.muit.fs.a4i.model.entities.Metric.MetricBuilder#unit(java.lang.String)}.
 	 */
 	@Test
 	void testUnit() {
@@ -102,7 +134,8 @@ class MetricBuilderTest {
 	}
 
 	/**
-	 * Test method for {@link us.muit.fs.a4i.model.entities.Metric.MetricBuilder#build()}.
+	 * Test method for
+	 * {@link us.muit.fs.a4i.model.entities.Metric.MetricBuilder#build()}.
 	 */
 	@Test
 	void testBuild() {

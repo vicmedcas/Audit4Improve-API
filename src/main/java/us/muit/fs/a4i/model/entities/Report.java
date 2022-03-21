@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.logging.Logger;
 
 import us.muit.fs.a4i.control.IndicatorsCalculator;
+import us.muit.fs.a4i.exceptions.IndicatorException;
 
 /**
  * <p>Aspectos generales de todos los informes</p>
@@ -41,6 +42,8 @@ public class Report implements ReportI {
 	    	PROJECT,
 	    	ORGANIZATION
 	    }
+	//Una vez establecido el tipo de informe no se podrá cambiar
+	private Type type=null;
 	/**
 	 * Mapa de Métricas
 	 * 
@@ -55,13 +58,13 @@ public class Report implements ReportI {
 	private HashMap<String,Indicator> indicators;
 	
 	public Report(){
-		metrics=new HashMap();
-		indicators=new HashMap();
+		metrics=new HashMap<String,Metric>();
+		indicators=new HashMap<String,Indicator>();
 		
 	}
 	public Report(String id){
-		metrics=new HashMap();
-		indicators=new HashMap();
+		metrics=new HashMap<String,Metric>();
+		indicators=new HashMap<String,Indicator>();
 		this.id=id;		
 	}
 	/**
@@ -76,6 +79,7 @@ public class Report implements ReportI {
 		Metric metric=null;
 		
 		if (metrics.containsKey(name)){
+			log.info("La métrica está en el informe");
 			metric=metrics.get(name);
 		}
 		return metric;
@@ -87,7 +91,7 @@ public class Report implements ReportI {
 	@Override
 	public void addMetric(Metric met) {		
 		metrics.put(met.getName(), met);
-		log.info("Añadida métrica "+met);
+		log.info("Añadida métrica "+met+" Con nombre "+met.getName());
 	}
 	/**
 	 * <p>Busca el indicador solicitado en el informe y lo devuelve</p>
@@ -117,11 +121,15 @@ public class Report implements ReportI {
 
 	}
 	/**
-	 * <p>Calcula el indicador solicitado<p>
+	 * <p>Calcula el indicador solicitado y lo incluye en el informe, si se necesita alguna métrica que no exista la calculadora la busca y la incluye<p>
 	 */
 	@Override
 	public void calcIndicator(String name) {
-		calc.calcIndicator(name, this);
+		try {
+			calc.calcIndicator(name, this);
+		} catch (IndicatorException e) {
+			log.info("No se puede calcular esta indicador, no se incluirá");
+		}
 	}
     @Override
 	public void setId(String id) {
@@ -132,10 +140,13 @@ public class Report implements ReportI {
     	return id;
     }
     @Override
-    public void setIndicatorsCalculator(IndicatorsCalculator calc) {
+    public void setIndicatorsCalculator(IndicatorsCalculator calc) throws IndicatorException {
 		log.info("Se establece la calculadora de indicadores que va a usar este informe");
-		this.calc=calc;
-		
+		if(this.type==null) {
+			this.type=calc.getReportType();
+		}else if(this.type!=calc.getReportType()){
+			throw new IndicatorException("La calculadora no concuerda con el tipo de informe");
+		}				
 	}
 	
 	@Override
@@ -155,6 +166,20 @@ public class Report implements ReportI {
 	public Collection<Metric> getAllMetrics() {
 		// TODO Auto-generated method stub
 		return metrics.values();
+	}
+	public Type getType() {
+		return type;
+	}
+	public void setType(Type type) {
+		//Sólo lo cambio si no estaba aún establecido
+		if (this.type==null) {
+		this.type = type;
+		}
+	}
+	@Override
+	public void calcAllIndicators() {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

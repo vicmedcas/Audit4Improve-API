@@ -34,6 +34,12 @@
 			"type": "java.util.Date",
 			"description": "Fecha de creaciÃ³n del calendario",
 			"unit": "date"
+		},
+		{
+			"name": "lastPush",
+			"type": "java.util.Date",
+			"description": "Último push realizado en el repositorio",
+			"unit": "date"
 		}
 	],
 	"indicators": [{

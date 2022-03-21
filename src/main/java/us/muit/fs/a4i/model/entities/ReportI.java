@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 
 import us.muit.fs.a4i.control.IndicatorsCalculator;
+import us.muit.fs.a4i.exceptions.IndicatorException;
 
 public interface ReportI {
 	
@@ -22,6 +23,9 @@ public interface ReportI {
 	void setId(String id);
 
 	String getId();
-	void setIndicatorsCalculator(IndicatorsCalculator calc);
+	
+	void setIndicatorsCalculator(IndicatorsCalculator calc) throws IndicatorException;
+	
+	void calcAllIndicators();
 
 }

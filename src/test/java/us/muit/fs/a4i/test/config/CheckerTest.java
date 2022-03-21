@@ -106,7 +106,7 @@ class CheckerTest {
 					"Debería ser nulo, el indicador no está definido");
 			log.info("Busco el indicador watchers");
 			assertNotNull(underTest.definedIndicator("watchers", valueOK.getClass().getName()),
-					"Debería no se nulo, el indicador está definido para valor de tipo Integer");
+					"Debería no ser nulo, el indicador está definido para valor de tipo Integer");
 			assertNull(underTest.definedIndicator("watchers", valueKO.getClass().getName()),
 					"Debería ser nulo, el indicador está definido para valor de tipo Integer");
 		} catch (FileNotFoundException e) {
@@ -122,6 +122,7 @@ class CheckerTest {
 		} catch (Exception e) {
 			fail("Lanza la excepción equivocada " + e);
 		}
+		//Tendría que probar un fichero de configuración de la aplicación cliente que sí fuera válido y asegurar que efectivamente se lee
 
 	}
 }

@@ -142,13 +142,9 @@ public class Context {
 
 	/**
 	 * <p>
-	 * No Implementado
-	 * </p>
-	 * <p>
+	 * No Implementado	
 	 * Deberá leer las propiedades adecuadas, como color, tamaño, tipo... y
 	 * construir un objeto Font
-	 * </p>
-	 * <p>
 	 * Si no se ha establecido un valor por defecto se crea una fuente simple
 	 * </p>
 	 * 

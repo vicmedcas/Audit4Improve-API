@@ -16,9 +16,18 @@ import us.muit.fs.a4i.model.entities.Indicator.State;
  *
  */
 public class ReportFormater implements ReportFormaterI {
-	private Font metricFont;
-	private HashMap<Indicator.State,Font> indicatorsFont;
+	/**
+	 * Formato de fuente usado si no se ha definido ninguna otra
+	 */
 	private Font defaultFont;
+	/**
+	 * Formato de fuente para las métricas
+	 */
+	private Font metricFont;
+	/**
+	 * Fomatos de fuente en función del estado del indicador
+	 */
+	private HashMap<Indicator.State,Font> indicatorsFont;
 	
     ReportFormater(){
     	 	this.indicatorsFont=new HashMap<Indicator.State,Font>();    	 	

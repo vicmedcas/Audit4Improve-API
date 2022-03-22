@@ -37,6 +37,7 @@ class MetricBuilderTest {
 	 */
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
+		//Acciones a realizar antes de ejecutar los tests de esta clase
 	}
 
 	/**
@@ -44,6 +45,7 @@ class MetricBuilderTest {
 	 */
 	@AfterAll
 	static void tearDownAfterClass() throws Exception {
+		//Acciones a realizar después de ejecutar todos los tests de esta clase
 	}
 
 	/**
@@ -51,6 +53,7 @@ class MetricBuilderTest {
 	 */
 	@BeforeEach
 	void setUp() throws Exception {
+		//Acciones a realizar antes de cada uno de los tests de esta clase
 	}
 
 	/**
@@ -58,14 +61,17 @@ class MetricBuilderTest {
 	 */
 	@AfterEach
 	void tearDown() throws Exception {
+		//Acciones a realizar después de cada uno de los tests de esta clase
 	}
 
 	/**
-	 * Test para el constructo Test method for
+	 * Test para el constructor Test de MetricBuilder: 
 	 * {@link us.muit.fs.a4i.model.entities.Metric.MetricBuilder#MetricBuilder(java.lang.String, java.lang.Object)}.
 	 */
 	@Test
 	void testMetricBuilder() {
+		//El constructor de métricas no permite que se incluyan métricas no definidas
+		//La clase checker definición de métricas
 		MetricBuilder underTest = null;
 		try {
 			underTest = new MetricBuilder<Integer>("watchers", 33);

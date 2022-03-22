@@ -6,6 +6,7 @@ package us.muit.fs.a4i.test.config;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.FileNotFoundException;
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 import org.junit.jupiter.api.AfterAll;
@@ -31,7 +32,7 @@ class CheckerTest {
 	 */
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
-
+		//Acciones a realizar antes de ejecutar los tests de esta clase
 	}
 
 	/**
@@ -39,6 +40,7 @@ class CheckerTest {
 	 */
 	@AfterAll
 	static void tearDownAfterClass() throws Exception {
+		//Acciones a realizar después de ejecutar todos los tests de esta clase
 	}
 
 	/**
@@ -46,6 +48,8 @@ class CheckerTest {
 	 */
 	@BeforeEach
 	void setUp() throws Exception {
+		//Acciones a realizar antes de cada uno de los tests de esta clase
+		//Creo el objeto bajo test, un Checker
 		underTest = new Checker();
 	}
 
@@ -54,38 +58,80 @@ class CheckerTest {
 	 */
 	@AfterEach
 	void tearDown() throws Exception {
+		//Acciones a realizar después de cada uno de los tests de esta clase
 	}
 
+	
+
 	/**
-	 * Test method for
+	 * Test para verificar el método
 	 * {@link us.muit.fs.a4i.control.Checker#definedMetric(java.lang.String)}.
+	 * Si la métrica está definida y el tipo de valor que se quiere establecer es el adecuado 
+	 * debe devolver un hashmap con los datos de la métrica, usando como clave las etiquetas:
+	 * <ul>
+	 * <li>description</li>
+	 * <li>unit</li>
+	 * </ul>
+	 * Las métricas pueden estar definidas en el fichero de configuración de la api (a4iDefault.json) o en otro fichero
+	 * configurado por la aplicación cliente. Para los test este fichero es appConfTest.json y se guarda
+	 * junto al código de test, en la carpeta resources
 	 */
 	@Test
 	void testDefinedMetric() {
-		Integer valueOK = Integer.valueOf(3);
-		String valueKO = "KO";
-		log.info("Busco la métrica kkk");
+		
+		//Creo valores Mock para verificar si comprueba bien el tipo
+		//Las métricas del test son de enteros, así que creo un entero y un string (el primero no dará problemas el segundo sí)
+		Integer valOKMock = Integer.valueOf(3);
+		String valKOMock = "KO";
+		HashMap<String,String> returnedMap=null;
+		//Primero, sin fichero de configuración de aplicación
 		try {
-			assertNull(underTest.definedMetric("kkk", valueOK.getClass().getName()),
-					"Debería ser nulo, la métrica no está definida");
-
+			//Consulta una métrica no definida, con valor de tipo entero
+			//debe devolver null, no está definida
+			log.info("Busco la métrica llamada downloads");
+			returnedMap=underTest.definedMetric("downloads", valOKMock.getClass().getName());
+			assertNull(returnedMap, "Debería ser nulo, la métrica noexiste no está definida");
+			
+			//Busco la métrica watchers con valor entero, no debería dar problemas
 			log.info("Busco la métrica watchers");
-			assertNotNull(underTest.definedMetric("watchers", valueOK.getClass().getName()),
-					"Debería devolver un hashmap, la métrica está definida");
-			assertNull(underTest.definedMetric("watchers", valueKO.getClass().getName()),
+			returnedMap=underTest.definedMetric("watchers", valOKMock.getClass().getName());
+			assertNotNull(returnedMap,"Debería devolver un hashmap, la métrica está definida");
+			assertTrue(returnedMap.containsKey("unit"),"La clave unit tiene que estar en el mapa");
+			assertTrue(returnedMap.containsKey("description"),"La clave description tiene que estar en el mapa");
+	        
+			//Busco una métrica que existe pero con un tipo incorrecto en el valor
+			assertNull(underTest.definedMetric("watchers", valKOMock.getClass().getName()),
 					"Debería ser nulo, la métrica está definida para Integer");
 		} catch (FileNotFoundException e) {
 			fail("El fichero está en la carpeta resources");
 			e.printStackTrace();
 		}
+		
+		//Ahora establezco el fichero de configuración de la aplicación, con un nombre de fichero que no existe
 		underTest.setAppMetrics("pepe");
 		try {
-			underTest.definedMetric("kkk", valueOK.getClass().getName());
+			//Busco una métrica que se que no está en la configuración de la api
+			returnedMap=underTest.definedMetric("downloads", valOKMock.getClass().getName());
 			fail("Debería lanzar una excepción porque intenta buscar en un fichero que no existe");
 		} catch (FileNotFoundException e) {
 			log.info("Lanza la excepción adecuada, FileNotFoud");
 		} catch (Exception e) {
 			fail("Lanza la excepción equivocada " + e);
+		}
+		
+		//Ahora establezco un fichero de configuración de la palicación que sí existe
+		underTest.setAppMetrics("src\\test\\resources\\appConfTest.json");
+		try {
+			//Busco una métrica que se que no está en la configuración de la api pero sí en la de la aplicación
+			log.info("Busco la métrica llamada downloads");
+			returnedMap=underTest.definedMetric("downloads", valOKMock.getClass().getName());
+			assertNotNull(returnedMap,"Debería devolver un hashmap, la métrica está definida");
+			assertTrue(returnedMap.containsKey("unit"),"La clave unit tiene que estar en el mapa");
+			assertTrue(returnedMap.containsKey("description"),"La clave description tiene que estar en el mapa");
+		} catch (FileNotFoundException e) {
+			fail("No debería devolver esta excepción");
+		} catch (Exception e) {
+			fail("Lanza una excepción no reconocida " + e);
 		}
 
 	}
@@ -96,33 +142,62 @@ class CheckerTest {
 	 */
 	@Test
 	void testDefinedIndicator() {
-		Integer valueOK = Integer.valueOf(3);
-		String valueKO = "KO";
-
+		
+		//Creo valores Mock para verificar si comprueba bien el tipo
+		//Las métricas del test son de enteros, así que creo un entero y un string (el primero no dará problemas el segundo sí)
+		Double valOKMock = Double.valueOf(0.3);
+		String valKOMock = "KO";
+		HashMap<String,String> returnedMap=null;
+		//Primero, sin fichero de configuración de aplicación
 		try {
-
-			log.info("Busco el indicador kkk");
-			assertNull(underTest.definedIndicator("kkk", valueOK.getClass().getName()),
-					"Debería ser nulo, el indicador no está definido");
-			log.info("Busco el indicador watchers");
-			assertNotNull(underTest.definedIndicator("watchers", valueOK.getClass().getName()),
-					"Debería no ser nulo, el indicador está definido para valor de tipo Integer");
-			assertNull(underTest.definedIndicator("watchers", valueKO.getClass().getName()),
-					"Debería ser nulo, el indicador está definido para valor de tipo Integer");
+			//Consulta un indicador no definido, con valor de tipo entero
+			//debe devolver null, no está definido
+			log.info("Busco el indicador llamado pullReqGlory");
+			returnedMap=underTest.definedIndicator("pullReqGlory", valOKMock.getClass().getName());
+			assertNull(returnedMap, "Debería ser nulo, el indicador pullReqGlory no está definido");
+			
+			//Busco el indicador overdued con valor double, no debería dar problemas
+			log.info("Busco el indicador overdued");
+			returnedMap=underTest.definedIndicator("overdued", valOKMock.getClass().getName());
+			assertNotNull(returnedMap,"Debería devolver un hashmap, el indicador overdued está definido");
+			assertTrue(returnedMap.containsKey("unit"),"La clave unit tiene que estar en el mapa");
+			assertTrue(returnedMap.containsKey("description"),"La clave description tiene que estar en el mapa");
+	        
+			//Busco una métrica que existe pero con un tipo incorrecto en el valor
+			assertNull(underTest.definedIndicator("overdued", valKOMock.getClass().getName()),
+					"Debería ser nulo, el indicador overdued está definido para Double");
 		} catch (FileNotFoundException e) {
-			fail("El fichero está en la carpeta resources y no se ha definido uno para la aplicación");
+			fail("El fichero está en la carpeta resources");
 			e.printStackTrace();
 		}
+		
+		//Ahora establezco el fichero de configuración de la aplicación, con un nombre de fichero que no existe
 		underTest.setAppMetrics("pepe");
 		try {
-			underTest.definedIndicator("kkk", valueOK.getClass().getName());
+			//Busco un indicador que se que no está en la configuración de la api
+			returnedMap=underTest.definedIndicator("pullReqGlory", valOKMock.getClass().getName());
 			fail("Debería lanzar una excepción porque intenta buscar en un fichero que no existe");
 		} catch (FileNotFoundException e) {
 			log.info("Lanza la excepción adecuada, FileNotFoud");
 		} catch (Exception e) {
 			fail("Lanza la excepción equivocada " + e);
 		}
-		//Tendría que probar un fichero de configuración de la aplicación cliente que sí fuera válido y asegurar que efectivamente se lee
+		
+		//Ahora establezco un fichero de configuración de la palicación que sí existe
+		underTest.setAppMetrics("src\\test\\resources\\appConfTest.json");
+		try {
+			//Busco una métrica que se que no está en la configuración de la api pero sí en la de la aplicación
+			log.info("Busco el indicador llamado pullReqGlory");
+			returnedMap=underTest.definedIndicator("pullReqGlory", valOKMock.getClass().getName());
+			assertNotNull(returnedMap,"Debería devolver un hashmap, el indicador está definido");
+			assertTrue(returnedMap.containsKey("unit"),"La clave unit tiene que estar en el mapa");
+			assertTrue(returnedMap.containsKey("description"),"La clave description tiene que estar en el mapa");
+		} catch (FileNotFoundException e) {
+			fail("No debería devolver esta excepción");
+		} catch (Exception e) {
+			fail("Lanza una excepción no reconocida " + e);
+		}
 
 	}
+
 }

@@ -27,5 +27,9 @@ public interface ReportI {
 	void setIndicatorsCalculator(IndicatorsCalculator calc) throws IndicatorException;
 	
 	void calcAllIndicators();
+	
+	void setType(Report.Type type);
+	
+	Report.Type getType();
 
 }

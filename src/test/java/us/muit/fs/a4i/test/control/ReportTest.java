@@ -9,8 +9,10 @@ import java.util.logging.Logger;
 
 
 import org.mockito.junit.jupiter.MockitoExtension;
-import static org.mockito.Mockito.mockitoSession;
 
+import static org.mockito.Mockito.atLeast;
+import static org.mockito.Mockito.mockitoSession;
+import static org.mockito.Mockito.times;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -30,7 +32,7 @@ import us.muit.fs.a4i.exceptions.IndicatorException;
 import us.muit.fs.a4i.model.entities.Indicator;
 import us.muit.fs.a4i.model.entities.Metric;
 import us.muit.fs.a4i.model.entities.Report;
-
+import us.muit.fs.a4i.model.entities.ReportI;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -48,10 +50,9 @@ class ReportTest {
 	 * <p>Objetos tipo Mock, sustitutos de las clases de las que depende Report</p>
 	 * 
 	 */
-	@Mock
+	@Mock(serializable =true)
 	private static IndicatorsCalculator indCalcMock= Mockito.mock(IndicatorsCalculator.class);
-	
-	
+		
 	
 	//Servirán para conocer el argumento con el que se ha invocado algún método de alguno de los mocks (sustitutos o representantes)
     //ArgumentCaptor es un genérico, indico al declararlo el tipo del argumento que quiero capturar
@@ -96,7 +97,7 @@ class ReportTest {
 	 */
 	@BeforeEach
 	void setUp() throws Exception {
-		reportTested=new Report();	
+		
 		
 	}
 
@@ -143,28 +144,26 @@ class ReportTest {
 	 */
 	@Test
 	void testAddMetric() {
-		Date date=Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC));
-		Mockito.when(metricIntMock.getName()).thenReturn("issues");
-		Mockito.when(metricIntMock.getDescription()).thenReturn("Tareas sin finalizar en el repositorio");
-	
-		Mockito.when(metricIntMock.getValue()).thenReturn(3);	
-		Mockito.when(metricDatMock.getName()).thenReturn("lastPush");
-		Mockito.when(metricDatMock.getDescription()).thenReturn("Último push realizado en el repositorio");
-	
-		Mockito.when(metricDatMock.getValue()).thenReturn(date);
+		reportTested=new Report();	
+		setMetricsMocks();		
 		//Primero se prueba a añadir una métrica de tipo Integer
 		reportTested.addMetric(metricIntMock);
-		
+		//Verifico que se ha consultado el nombre una vez al invocar este método, se usa como clave para meterlo en un mapa, hay que consultarlo
+		//¿Por qué falla? ¿Con qué no había contado? ¿Hay problemas en el test o en el código?
+		//Prueba a sustituir por la línea comentada
+		Mockito.verify(metricIntMock).getName();
+		//Mockito.verify(metricIntMock, atLeast(1)).getName();
 		Metric metric=reportTested.getMetricByName("issues");
 		assertEquals(metric.getValue(),3,"Debería tener el valor especificado en el mock");
 		assertEquals(metric.getDescription(),"Tareas sin finalizar en el repositorio","Debería tener el valor especificado en el mock");
+		
 		//Ahora se prueba una métrica de tipo Date
 		reportTested.addMetric(metricDatMock);
 		metric=reportTested.getMetricByName("lastPush");
 		assertEquals(metric.getValue(),metricDatMock.getValue(),"Debería tener el valor especificado en el mock");
 		assertEquals(metric.getDescription(),"Último push realizado en el repositorio","Debería tener el valor especificado en el mock");
-		//Ahora se prueba a añadir otra vez la misma métrica pero con otro valor
 		
+		//Ahora se prueba a añadir otra vez la misma métrica pero con otro valor		
 		reportTested.addMetric(metricIntMock);
 		Mockito.when(metricIntMock.getValue()).thenReturn(55);	
 		metric=reportTested.getMetricByName("issues");
@@ -193,9 +192,14 @@ class ReportTest {
 	 */
 	@Test
 	void testCalcIndicator() {
-		//Se configura la calculadora de indicadores
+		//Definimos calculadora de tipo repositorio
+		Mockito.when(indCalcMock.getReportType()).thenReturn(Report.Type.REPOSITORY);
+		
+		
+		//Se configura la calculadora de indicadores del informe
 		try {
 			reportTested.setIndicatorsCalculator(indCalcMock);
+			Mockito.verify(indCalcMock).getReportType();
 		} catch (IndicatorException e1) {
 			fail("No debería lanzar la excepción");
 		}
@@ -204,11 +208,13 @@ class ReportTest {
 		//Se observa con qué parámetros se invoca a la calculadora de indicadores
 		try {
 			Mockito.verify(indCalcMock).calcIndicator(strCaptor.capture(), reportCaptor.capture());
+			//Elimine el comentario que aparece a continuación, ejecute el test y explique por qué falla
+			//Mockito.verify(indCalcMock).calcAllIndicators(reportTested);
 		} catch (IndicatorException e) {
 			fail("No debería lanzar la excepción");
 		}
 		
-		//Se verfica que se usa el nombre corecto y se pasa la referencia al informe correcto
+		//Se verfica que se usa el nombre correcto y se pasa la referencia al informe correcto
 		assertEquals("issues",strCaptor.getValue(),"Se solicita el cálculo de la métrica adecuada");
 		assertEquals(reportTested,reportCaptor.getValue(),"Se pasa la referencia correcta del informe");
 		//Hago un test que asegure que el propio informe captura y gestiona la excepción de que el indicador no existe
@@ -243,7 +249,52 @@ class ReportTest {
 	 */
 	@Test
 	void testSetIndicatorsCalculator() {
-		fail("Not yet implemented"); // TODO
+		//Definimos calculadora de tipo repositorio
+		Mockito.when(indCalcMock.getReportType()).thenReturn(Report.Type.REPOSITORY);
+		ReportI orgReport=new Report(Report.Type.ORGANIZATION);
+		ReportI repoReport=new Report(Report.Type.REPOSITORY);
+		ReportI report=new Report();
+		//Vamos a probar establecer la calculadora en un informe que no tiene el tipo aún establecido (Debería tener el tipo de la calculadora al final%9
+		//Para ello usamos report
+		try {
+			report.setIndicatorsCalculator(indCalcMock);
+			//Se ha tenido que consultar el tipo de calculadora
+			Mockito.verify(indCalcMock).getReportType();
+			assertEquals(indCalcMock.getReportType(),report.getType());
+		} catch (IndicatorException e) {
+			fail("No debería lanzar excepción");
+		}
+		
+		//Vamos a probar a establecer la calculadora si el tipo de ambos coincide, uso repoReport
+		try {
+			repoReport.setIndicatorsCalculator(indCalcMock);
+			//Se ha tenido que consultar el tipo de calculadora
+			//Mockito.verify(indCalcMock, times(2)).getReportType();
+			assertEquals(indCalcMock.getReportType(),repoReport.getType());
+		} catch (IndicatorException e) {
+			fail("No debería lanzar excepción");
+		}
+		
+		//Vamos a probar a establecer la calculadora si el tipo de la calculadora discrepa con el tipo del informe, uso orgReport
+	
+		try {
+			orgReport.setIndicatorsCalculator(indCalcMock);
+			//Se ha tenido que consultar el tipo de calculadora
+			fail("Debe saltar una excepción antes, no debería llegar aquí");
+		} catch (IndicatorException e) {
+			
+			log.info("Ha saltado la excepción de indicador");
+			//Suponga que los requisitos cambian, le piden que el mensaje debe ser "El tipo de la calculadora discrepa del tipo del informe"
+			//Cambie el test para que lo verifique y ejecute ¿Qué ocurre?
+			assertEquals(e.getMessage(),"La calculadora no concuerda con el tipo de informe","El mensaje es correcto");
+		} catch(Exception e) {
+			fail("La excepción no es del tipo IndicatorException como se esperaba");
+		}
+		//Esta verificación es para mostrar que se puede analizar también el comportamiento interno de la clase
+		//en esta ocasión el número de veces que invoca a la calculadora durante el test
+		//Probar a cambiar 5 por otro número y ejecutar
+		Mockito.verify(indCalcMock,times(5)).getReportType();
+	
 	}
 
 	/**
@@ -260,6 +311,16 @@ class ReportTest {
 	@Test
 	void testGetAllMetrics() {
 		fail("Not yet implemented"); // TODO
+	}
+	void setMetricsMocks() {
+		Date date=Date.from(LocalDateTime.now().toInstant(ZoneOffset.UTC));
+		Mockito.when(metricIntMock.getName()).thenReturn("issues");
+		Mockito.when(metricIntMock.getDescription()).thenReturn("Tareas sin finalizar en el repositorio");	
+		Mockito.when(metricIntMock.getValue()).thenReturn(3);	
+	
+		Mockito.when(metricDatMock.getName()).thenReturn("lastPush");
+		Mockito.when(metricDatMock.getDescription()).thenReturn("Último push realizado en el repositorio");	
+		Mockito.when(metricDatMock.getValue()).thenReturn(date);
 	}
 
 }

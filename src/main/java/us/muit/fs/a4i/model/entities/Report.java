@@ -22,12 +22,12 @@ import us.muit.fs.a4i.exceptions.IndicatorException;
 public class Report implements ReportI {
 	private static Logger log=Logger.getLogger(Report.class.getName());
 	/**
-	 * <p>Identificador unívoco de la entidad a la que se refire el informe</p>
+	 * <p>Identificador unívoco de la entidad a la que se refire el informe en el servidor remoto que se va a utilizar</p>
 	 */
 	private String id;
 	/**
-	 * <p>Los objetos que implementen esta interfaz implementarán los algoritmos para el cálculo de indicadores<p>
-	 * <p>Los algoritmos de cálculo de indicadores podrán ser específicos para un tipo de informe<p>
+	 * <p>Los objetos que implementen esta interfaz recurren a calcuadoras con los algoritmos para el cálculo de indicadores<p>
+	 * <p>Los algoritmos de cálculo de indicadores serán específicos para un tipo de informe<p>
 	 */
 	private IndicatorsCalculator calc;
 	
@@ -58,14 +58,25 @@ public class Report implements ReportI {
 	private HashMap<String,Indicator> indicators;
 	
 	public Report(){
-		metrics=new HashMap<String,Metric>();
-		indicators=new HashMap<String,Indicator>();
+		createMaps();
 		
 	}
 	public Report(String id){
+		createMaps();
+		this.id=id;		
+	}
+	public Report(Type type){
+		createMaps();
+		this.type=type;		
+	}
+	public Report(Type type,String id){
+		createMaps();
+		this.type=type;	
+		this.id=id;		
+	}	
+	private void createMaps() {
 		metrics=new HashMap<String,Metric>();
 		indicators=new HashMap<String,Indicator>();
-		this.id=id;		
 	}
 	/**
 	 * <p>Busca la métrica solicita en el informe y la devuelve</p>
@@ -144,9 +155,11 @@ public class Report implements ReportI {
 		log.info("Se establece la calculadora de indicadores que va a usar este informe");
 		if(this.type==null) {
 			this.type=calc.getReportType();
+			log.info("El tipo del informe será "+this.type);
 		}else if(this.type!=calc.getReportType()){
 			throw new IndicatorException("La calculadora no concuerda con el tipo de informe");
-		}				
+		}	
+		this.calc=calc;
 	}
 	
 	@Override
@@ -167,13 +180,16 @@ public class Report implements ReportI {
 		// TODO Auto-generated method stub
 		return metrics.values();
 	}
+	@Override
 	public Type getType() {
 		return type;
 	}
+	@Override
 	public void setType(Type type) {
-		//Sólo lo cambio si no estaba aún establecido
+		//Sólo se puede cambiar si no estaba aún establecido
+		//Un informe no puede cambiar de tipo
 		if (this.type==null) {
-		this.type = type;
+			this.type = type;
 		}
 	}
 	@Override

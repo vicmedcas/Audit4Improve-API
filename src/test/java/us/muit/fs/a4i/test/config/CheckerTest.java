@@ -65,7 +65,7 @@ class CheckerTest {
 
 	/**
 	 * Test para verificar el método
-	 * {@link us.muit.fs.a4i.control.Checker#definedMetric(java.lang.String)}.
+	 * {@link us.muit.fs.a4i.config.Checker#definedMetric(java.lang.String, java.lang.String)}.
 	 * Si la métrica está definida y el tipo de valor que se quiere establecer es el adecuado 
 	 * debe devolver un hashmap con los datos de la métrica, usando como clave las etiquetas:
 	 * <ul>
@@ -138,7 +138,7 @@ class CheckerTest {
 
 	/**
 	 * Test method for
-	 * {@link us.muit.fs.a4i.control.Checker#definedIndicator(java.lang.String)}.
+	 * {@link us.muit.fs.a4i.config.Checker#definedIndicator(java.lang.String, java.lang.String)}.
 	 */
 	@Test
 	void testDefinedIndicator() {

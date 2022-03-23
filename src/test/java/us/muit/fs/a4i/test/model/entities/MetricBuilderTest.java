@@ -33,7 +33,7 @@ class MetricBuilderTest {
 	private static Logger log = Logger.getLogger(MetricBuilderTest.class.getName());
 
 	/**
-	 * @throws java.lang.Exception
+	 * @throws java.lang.Exception Se incluye por defecto al crear automáticamente los tests con eclipse
 	 */
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -41,7 +41,7 @@ class MetricBuilderTest {
 	}
 
 	/**
-	 * @throws java.lang.Exception
+	 * @throws java.lang.Exception Se incluye por defecto al crear automáticamente los tests con eclipse
 	 */
 	@AfterAll
 	static void tearDownAfterClass() throws Exception {
@@ -49,7 +49,7 @@ class MetricBuilderTest {
 	}
 
 	/**
-	 * @throws java.lang.Exception
+	 * @throws java.lang.Exception Se incluye por defecto al crear automáticamente los tests con eclipse
 	 */
 	@BeforeEach
 	void setUp() throws Exception {
@@ -57,7 +57,7 @@ class MetricBuilderTest {
 	}
 
 	/**
-	 * @throws java.lang.Exception
+	 * @throws java.lang.Exception Se incluye por defecto al crear automáticamente los tests con eclipse
 	 */
 	@AfterEach
 	void tearDown() throws Exception {
@@ -67,6 +67,7 @@ class MetricBuilderTest {
 	/**
 	 * Test para el constructor Test de MetricBuilder: 
 	 * {@link us.muit.fs.a4i.model.entities.Metric.MetricBuilder#MetricBuilder(java.lang.String, java.lang.Object)}.
+	 * @see org.junit.jupiter.api.Test
 	 */
 	@Test
 	void testMetricBuilder() {

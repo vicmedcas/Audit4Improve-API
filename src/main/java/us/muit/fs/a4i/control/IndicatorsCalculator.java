@@ -29,7 +29,6 @@ public interface IndicatorsCalculator {
 	/**
 	 * <p>Calcula todos los indicadores configurados para el tipo de informe que se pasa. Debe averiguar primero el tipo de informe</p>
 	 * @param report Informe sobre el que realizar el cálculo
-	 * @throws IndicatorException Si el informe no incluye el tipo no sabrá que indicadores calcular
 	 */
 	public void calcAllIndicators(ReportI report);
 	

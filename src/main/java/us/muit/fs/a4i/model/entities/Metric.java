@@ -3,7 +3,6 @@
  */
 package us.muit.fs.a4i.model.entities;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDateTime;
 
@@ -38,7 +37,11 @@ public class Metric<T> {
 	private String description;
 	private String source;
 	private String unit;
-	
+	/**
+	 * Construye un objeto métrica a partir de un constructor, previamente configurado
+	 * Sólo lo utiliza el propio constructor, es privado, nadie, que no sea el constructor, puede crear una métrica
+	 * @param builder Constructor de la métrica
+	 */
 	private Metric(MetricBuilder<T> builder){
 		
 		this.description=builder.description;
@@ -49,43 +52,63 @@ public class Metric<T> {
 		this.date=builder.date;
 	}
 	
-	
+	/**
+	 * Obtiene la descripción de la métrica
+	 * @return Descripción del significado de la métrica
+	 */
 	public String getDescription() {
 		return description;
 	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
+	
+	
+	/**
+	 * Consulta el nombre de la métrica
+	 * @return Nombre de la métrica
+	 */
 	public String getName() {
 		return name;
 	}
-	public void setName(String name) {
-		this.name = name;
-	}
+	/**
+	 * Consulta el valor de la métrica
+	 * @return Medida
+	 */
 	public T getValue() {
 		return value;
 	}
-	public void setValue(T value) {
-		this.value = value;
-	}
+	/**
+	 * Consulta la fuente de información
+	 * @return Origen de la medida
+	 */
 	public String getSource() {
 		return source;
 	}
+	/***
+	 * Establece la fuente de la información para la medida
+	 * @param source fuente de información origen
+	 */
 	public void setSource(String source) {
 		this.source = source;
 	}
+	/**
+	 * Consulta las unidades de medida
+	 * @return la unidad usada en la medida
+	 */
 	public String getUnit() {
 		return unit;
 	}
-	public void setUnit(String unit) {
-		this.unit = unit;
-	}
+	
+	/**
+	 * Consulta cuando se obtuvo la métrica
+	 * @return Fecha de consulta de la métrica
+	 */
 	public Date getDate() {
 		return date;
 	}
-	public void setDate(Date date) {
-		this.date = date;
-	}
+	
+	/**
+	 * <p>Clase para construir métricas. Verifica las métricas antes de crearlas</p>
+	 *
+	 */
 	public static class MetricBuilder<T>{
 		private String description;
 		private String name;
@@ -117,14 +140,29 @@ public class Metric<T> {
 			
 			
 		}
+		/**
+		 * <p>Establece la descripción de la métrica</p>
+		 * @param description Breve descripción del significado de la métrica
+		 * @return El propio constructor
+		 */
 		public MetricBuilder<T> description(String description){
 			this.description=description;
 			return this;
 		}
+		/**
+		 * <p>Establece la fuente de información</p>
+		 * @param source Fuente de la que se extrajeron los datos
+		 * @return El propio constructor
+		 */
 		public MetricBuilder<T> source(String source){
 			this.source=source;
 			return this;
 		}
+		/**
+		 * <p>Establece las unidades de medida</p>
+		 * @param unit Unidades de medida de la métrica
+		 * @return El propio constructor
+		 */
 		public MetricBuilder<T> unit(String unit){
 			this.unit=unit;
 			return this;

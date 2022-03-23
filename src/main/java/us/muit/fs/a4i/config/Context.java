@@ -27,10 +27,10 @@ import us.muit.fs.a4i.model.entities.Metric;
  * configuración. Se presentan posibilidades para:
  * </p>
  * <ul>
- * <li type="circle">Localizar el fichero en la carpeta resources, incluida en
+ * <li>Localizar el fichero en la carpeta resources, incluida en
  * el jar</li>
- * <li type="circle">Localizar el fichero en el home de usuario</li>
- * <li type="circle">Localizar el fichero en una ruta introducida de forma
+ * <li>Localizar el fichero en el home de usuario</li>
+ * <li>Localizar el fichero en una ruta introducida de forma
  * "programada"</li>
  * </ul>
  * <p>
@@ -93,7 +93,7 @@ public class Context {
 	 * Las propiedades no establecidas se cogerán de la configuración por defecto
 	 * </p>
 	 * 
-	 * @param appCon Ruta completa al fichero de configuración establecido por la
+	 * @param appConPath Ruta completa al fichero de configuración establecido por la
 	 *               propiedad cliente
 	 * @throws IOException
 	 */

@@ -1,5 +1,6 @@
 {
-	"metrics": [{
+	"metrics": [
+		{
 			"name": "downloads",
 			"type": "java.lang.Integer",
 			"description": "Descargas realizadas",
@@ -11,10 +12,9 @@
 			"description": "Númeoro de comentarios",
 			"unit": "comments"
 		}
-		
-		
 	],
-	"indicators": [{
+	"indicators": [
+		{
 			"name": "pullReqGlory",
 			"type": "java.lang.Double",
 			"description": "Ratio de pull request aceptados frente a solicitados",
@@ -26,6 +26,5 @@
 			"description": "Ratio de comentarios con más de 1 respuesta frente al número total de comentarios",
 			"unit": "ratio"
 		}
-		
 	]
 }

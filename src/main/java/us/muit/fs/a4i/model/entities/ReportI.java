@@ -7,6 +7,18 @@ import us.muit.fs.a4i.control.IndicatorsCalculator;
 import us.muit.fs.a4i.exceptions.IndicatorException;
 
 public interface ReportI {
+	/**
+	 * <p>Tipos de informes, puede necesitarse cuando los algoritmos de cálculo de indicadores difieran según el tipo de informe</p>
+	 * <p>Un informe sólo es de un tipo y no se puede modificar una vez establecido</p>
+	 * 
+	 */
+
+	public static enum Type{
+    	REPOSITORY,
+    	DEVELOPER,
+    	PROJECT,
+    	ORGANIZATION
+    }
 	
 	/**
 	 * Consulta una métrica de un informe a partir del nombre
@@ -71,11 +83,11 @@ public interface ReportI {
 	 * Establece el tipo del informe, sólo se puede establecer una vez y debe coincidir con la el tipo de la calculadora usada
 	 * @param type Tipo del informe 
 	 */
-	void setType(Report.Type type);
+	void setType(ReportI.Type type);
 	/**
 	 * Obtiene el tipo del informe
 	 * @return Tipo del informe
 	 */
-	Report.Type getType();
+	ReportI.Type getType();
 
 }

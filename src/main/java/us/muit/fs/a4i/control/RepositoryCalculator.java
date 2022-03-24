@@ -6,8 +6,7 @@ package us.muit.fs.a4i.control;
 import java.util.logging.Logger;
 
 import us.muit.fs.a4i.model.entities.Indicator;
-import us.muit.fs.a4i.model.entities.Report;
-import us.muit.fs.a4i.model.entities.Report.Type;
+
 import us.muit.fs.a4i.model.entities.ReportI;
 
 /**
@@ -16,8 +15,8 @@ import us.muit.fs.a4i.model.entities.ReportI;
  * @author Isabel Román
  *
  */
-public class RepositoryIndicators implements IndicatorsCalculator {
-	private static Logger log=Logger.getLogger(RepositoryIndicators.class.getName());
+public class RepositoryCalculator implements IndicatorsCalculator {
+	private static Logger log=Logger.getLogger(RepositoryCalculator.class.getName());
 	@Override
 	public void calcIndicator(String name, ReportI report) {
 		log.info("Calcula el indicador de nombre "+name);
@@ -44,7 +43,7 @@ public class RepositoryIndicators implements IndicatorsCalculator {
     	return indicator;
     }
 	@Override
-	public Type getReportType() {
-		return Report.Type.REPOSITORY;
+	public ReportI.Type getReportType() {
+		return ReportI.Type.REPOSITORY;
 	}
 }

@@ -250,9 +250,9 @@ class ReportTest {
 	@Test
 	void testSetIndicatorsCalculator() {
 		//Definimos calculadora de tipo repositorio
-		Mockito.when(indCalcMock.getReportType()).thenReturn(Report.Type.REPOSITORY);
-		ReportI orgReport=new Report(Report.Type.ORGANIZATION);
-		ReportI repoReport=new Report(Report.Type.REPOSITORY);
+		Mockito.when(indCalcMock.getReportType()).thenReturn(ReportI.Type.REPOSITORY);
+		ReportI orgReport=new Report(ReportI.Type.ORGANIZATION);
+		ReportI repoReport=new Report(ReportI.Type.REPOSITORY);
 		ReportI report=new Report();
 		//Vamos a probar establecer la calculadora en un informe que no tiene el tipo aún establecido (Debería tener el tipo de la calculadora al final%9
 		//Para ello usamos report

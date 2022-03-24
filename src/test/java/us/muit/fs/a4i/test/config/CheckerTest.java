@@ -13,6 +13,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import us.muit.fs.a4i.config.Checker;
@@ -21,14 +23,18 @@ import us.muit.fs.a4i.config.Checker;
  * Test de la clase Checker que verifica las métricas e indicadores
  * 
  * @author Isabel Román
+ * @see org.junit.jupiter.api.Tag
  *
  */
+
+@Tag("unidad")
 class CheckerTest {
 	private static Logger log = Logger.getLogger(CheckerTest.class.getName());
 	static Checker underTest;
 
 	/**
 	 * @throws java.lang.Exception
+	 * @see org.junit.jupiter.api.BeforeAll
 	 */
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
@@ -37,6 +43,7 @@ class CheckerTest {
 
 	/**
 	 * @throws java.lang.Exception
+	 * @see org.junit.jupiter.api.AfterAll
 	 */
 	@AfterAll
 	static void tearDownAfterClass() throws Exception {
@@ -45,6 +52,7 @@ class CheckerTest {
 
 	/**
 	 * @throws java.lang.Exception
+	 * @see org.junit.jupiter.api.BeforeEach
 	 */
 	@BeforeEach
 	void setUp() throws Exception {
@@ -55,13 +63,21 @@ class CheckerTest {
 
 	/**
 	 * @throws java.lang.Exception
+	 * @see org.junit.jupiter.api.AfterEach
 	 */
 	@AfterEach
 	void tearDown() throws Exception {
 		//Acciones a realizar después de cada uno de los tests de esta clase
 	}
 
-	
+	/**
+	 * Test para el método que establece el fichero de configuración de la aplicación
+	 * {@link us.muit.fs.a4i.config.Checker#setAppMetrics(java.lang.String)}.
+	 */
+	@Test
+	void testSetAppMetrics() {
+		fail("Not yet implemented"); // TODO
+	}
 
 	/**
 	 * Test para verificar el método
@@ -75,8 +91,16 @@ class CheckerTest {
 	 * Las métricas pueden estar definidas en el fichero de configuración de la api (a4iDefault.json) o en otro fichero
 	 * configurado por la aplicación cliente. Para los test este fichero es appConfTest.json y se guarda
 	 * junto al código de test, en la carpeta resources
+	 * @see org.junit.jupiter.api.Tag
+	 * @see org.junit.jupiter.api.Test
+	 * @see org.junit.jupiter.api.DisplayName
+	 * 
+	 * Test para verificar el método
+	 * {@link us.muit.fs.a4i.config.Checker#definedMetric(java.lang.String, java.lang.String)}.
 	 */
 	@Test
+	@Tag("unidad")
+	@DisplayName("Prueba para el método definedMetric, que verifica si la métrica está definida con un tipo determinado y devuelve su configuración")
 	void testDefinedMetric() {
 		
 		//Creo valores Mock para verificar si comprueba bien el tipo
@@ -119,7 +143,7 @@ class CheckerTest {
 			fail("Lanza la excepción equivocada " + e);
 		}
 		
-		//Ahora establezco un fichero de configuración de la palicación que sí existe
+		//Ahora establezco un fichero de configuración de la aplicación que sí existe
 		underTest.setAppMetrics("src\\test\\resources\\appConfTest.json");
 		try {
 			//Busco una métrica que se que no está en la configuración de la api pero sí en la de la aplicación
@@ -137,10 +161,16 @@ class CheckerTest {
 	}
 
 	/**
-	 * Test method for
+	 * @see org.junit.jupiter.api.Tag
+	 * @see org.junit.jupiter.api.Test
+	 * @see org.junit.jupiter.api.DisplayName
+	 * 
+	 * Test para el método
 	 * {@link us.muit.fs.a4i.config.Checker#definedIndicator(java.lang.String, java.lang.String)}.
 	 */
 	@Test
+	@Tag("unidad")
+	@DisplayName("Prueba para el método definedIndicator, que verifica si el indicador está definido con un tipo determinado y devuelve su configuración")
 	void testDefinedIndicator() {
 		
 		//Creo valores Mock para verificar si comprueba bien el tipo
@@ -183,7 +213,7 @@ class CheckerTest {
 			fail("Lanza la excepción equivocada " + e);
 		}
 		
-		//Ahora establezco un fichero de configuración de la palicación que sí existe
+		//Ahora establezco un fichero de configuración de la aplicación que sí existe
 		underTest.setAppMetrics("src\\test\\resources\\appConfTest.json");
 		try {
 			//Busco una métrica que se que no está en la configuración de la api pero sí en la de la aplicación

@@ -4,8 +4,6 @@
 package us.muit.fs.a4i.control;
 
 import us.muit.fs.a4i.exceptions.IndicatorException;
-import us.muit.fs.a4i.model.entities.Indicator;
-import us.muit.fs.a4i.model.entities.Report;
 import us.muit.fs.a4i.model.entities.ReportI;
 
 /**
@@ -27,14 +25,15 @@ public interface IndicatorsCalculator {
 	
 	public void calcIndicator(String name,ReportI report) throws IndicatorException;
 	/**
-	 * <p>Calcula todos los indicadores configurados para el tipo de informe que se pasa. Debe averiguar primero el tipo de informe</p>
+	 * <p>Calcula todos los indicadores configurados para el tipo de informe que se pasa. Debe verificar primero que el tipo de informe que se pasa es correcto</p>
 	 * @param report Informe sobre el que realizar el cálculo
+	 * @throws IndicatorException Si el tipo del informe no coincide con el de la calculadora
 	 */
-	public void calcAllIndicators(ReportI report);
+	public void calcAllIndicators(ReportI report) throws IndicatorException;
 	
 	/**
 	 * Devuelve el tipo de informe que maneja esta calculadora de indicadores
 	 * @return El tipo de informes
 	 */
-	public Report.Type getReportType();
+	public ReportI.Type getReportType();
 }

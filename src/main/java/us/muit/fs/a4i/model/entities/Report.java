@@ -31,19 +31,10 @@ public class Report implements ReportI {
 	 */
 	private IndicatorsCalculator calc;
 	
-	/**
-	 * <p>Tipos de informes, puede necesitarse cuando los algoritmos de cálculo de indicadores difieran según el tipo de informe</p>
-	 * 
-	 */
 	
-	public static enum Type{
-	    	REPOSITORY,
-	    	DEVELOPER,
-	    	PROJECT,
-	    	ORGANIZATION
-	    }
-	//Una vez establecido el tipo de informe no se podrá cambiar
-	private Type type=null;
+	
+	
+	private ReportI.Type type=null;
 	/**
 	 * Mapa de Métricas
 	 * 
@@ -181,11 +172,11 @@ public class Report implements ReportI {
 		return metrics.values();
 	}
 	@Override
-	public Type getType() {
+	public ReportI.Type getType() {
 		return type;
 	}
 	@Override
-	public void setType(Type type) {
+	public void setType(ReportI.Type type) {
 		//Sólo se puede cambiar si no estaba aún establecido
 		//Un informe no puede cambiar de tipo
 		if (this.type==null) {

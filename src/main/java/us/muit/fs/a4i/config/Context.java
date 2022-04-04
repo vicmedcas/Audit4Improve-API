@@ -218,13 +218,13 @@ public class Context {
 	/**
 	 * <p>
 	 * Crea las propiedades, incluye las propiedades por defecto, leyendo del
-	 * fichero de conf de la API
+	 * fichero de conf de la API (configuración por defecto)
 	 * </p>
 	 * 
 	 * @throws IOException si hay problemas leyendo el fichero
 	 */
 	private void setProperties() throws IOException {
-		log.info("Lectura del fichero de configuración");
+		log.info("Lectura del fichero de configuración por defecto");
 		FileInputStream file;
 		// Establecemos las propiedades por defecto, del fichero de configuración
 		// embebido en el jar

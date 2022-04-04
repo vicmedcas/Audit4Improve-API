@@ -14,6 +14,8 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import us.muit.fs.a4i.model.entities.Metric.MetricBuilder;
@@ -23,7 +25,7 @@ import us.muit.fs.a4i.model.entities.Metric;
 
 /**
  * <p>
- * Test para probar el constructor de objetos Metric
+ * Test para probar el constructor de objetos de tipo Metric
  * </p>
  * 
  * @author Isabel Román
@@ -70,9 +72,11 @@ class MetricBuilderTest {
 	 * @see org.junit.jupiter.api.Test
 	 */
 	@Test
+	@Tag("integración")
+	@DisplayName("Prueba constructor métricas, las clases Context y Checker ya están disponibles")
 	void testMetricBuilder() {
-		//El constructor de métricas no permite que se incluyan métricas no definidas
-		//La clase checker definición de métricas
+		
+		//Comenzamos probando el caso más sencillo, la métrica existe y el tipo es correcto
 		MetricBuilder underTest = null;
 		try {
 			underTest = new MetricBuilder<Integer>("watchers", 33);
@@ -89,8 +93,9 @@ class MetricBuilderTest {
 		assertEquals(newMetric.getDescription(), "Observadores, en la web aparece com forks","La descripción no coincide con la del fichero de configuración");
 		assertNull(newMetric.getSource(), "El origen no debería estar incluido");
 		assertEquals(newMetric.getUnit(),"watchers", "No debería incluir las unidades");
+		
 		// A continuación se prueba que se hace verificación correcta del tipo de métrica
-		// Prueba un tipo que no se corresponde con el definido por la métrica
+		// Prueba un tipo que no se corresponde con el definido por la métrica, tiene que lanzar la excepción MetricException
 		try {
 			underTest = new MetricBuilder<String>("watchers", "hola");
 			fail("Debería haber lanzado una excepción");
@@ -100,6 +105,13 @@ class MetricBuilderTest {
 		} catch (Exception e) {
 			fail("La excepción capturada es " + e + " cuando se esperaba de tipo MetricException");
 		}
+		//Forma ALTERNATIVA de verificar el lanzamiento de una excepción, usando la verificación assertThrows
+		MetricException thrown = assertThrows(MetricException.class, () -> {
+			new MetricBuilder<String>("watchers", "hola");
+				}, "Se esperaba la excepción MetricException");
+		//verifica también que el mensaje es correcto
+		assertEquals("Métrica watchers no definida o tipo java.lang.String incorrecto", thrown.getMessage(),"El mensaje de la excepción no es correcto");
+		//El constructor de métricas no permite que se incluyan métricas no definidas
 		// Prueba una métrica que no existe
 		try {
 			underTest = new MetricBuilder<String>("pepe", "hola");
@@ -127,8 +139,22 @@ class MetricBuilderTest {
 	 * {@link us.muit.fs.a4i.model.entities.Metric.MetricBuilder#source(java.lang.String)}.
 	 */
 	@Test
+	@Tag("integración")
+	@DisplayName("Prueba establecer fuente en constructor, las clases Context y Checker ya están disponibles")
 	void testSource() {
-		fail("Not yet implemented"); // TODO
+		//Verificamos que si se establece una fuente en el constructor la métrica creada especifica esa fuente
+				MetricBuilder underTest = null;
+				try {
+					underTest = new MetricBuilder<Integer>("watchers", 33);
+				} catch (MetricException e) {
+					fail("No debería haber saltado esta excepción");
+					e.printStackTrace();
+				}
+				underTest.source("GitHub");
+				Metric newMetric = underTest.build();
+				log.info("Métrica creada "+newMetric.toString());			
+				assertEquals("GitHub",newMetric.getSource(),"Source no tiene el valor esperado");
+			
 	}
 
 	/**
@@ -139,14 +165,6 @@ class MetricBuilderTest {
 	void testUnit() {
 		fail("Not yet implemented"); // TODO
 	}
-
-	/**
-	 * Test method for
-	 * {@link us.muit.fs.a4i.model.entities.Metric.MetricBuilder#build()}.
-	 */
-	@Test
-	void testBuild() {
-		fail("Not yet implemented"); // TODO
-	}
+	
 
 }

@@ -38,3 +38,4 @@ gradle.properties
 
 #las pruebas harán generar informes excel, que no quiero subir al repositorio remoto
 *.xls
+/javadoc.xml

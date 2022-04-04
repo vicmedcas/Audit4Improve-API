@@ -111,7 +111,7 @@ public class Checker {
 	 * </p>
 	 * 
 	 * @param indicatorName nombre del indicador que se quiere comprobar
-	 * @return true si el indicador está definido
+	 * @return indicatorDefinition Si el indicador está definido y el tipo es correcto se devuelve un mapa con las unidades y la descripción
 	 * @throws FileNotFoundException Si no se localiza el fichero de configuración
 	 */
 	public HashMap<String,String> definedIndicator(String indicatorName, String indicatorType) throws FileNotFoundException {

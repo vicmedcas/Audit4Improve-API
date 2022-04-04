@@ -5,6 +5,7 @@ package us.muit.fs.a4i.test.config;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.logging.Logger;
@@ -31,6 +32,7 @@ import us.muit.fs.a4i.config.Checker;
 class CheckerTest {
 	private static Logger log = Logger.getLogger(CheckerTest.class.getName());
 	static Checker underTest;
+	static String appConfPath;
 
 	/**
 	 * @throws java.lang.Exception
@@ -39,6 +41,7 @@ class CheckerTest {
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 		//Acciones a realizar antes de ejecutar los tests de esta clase
+		appConfPath="src"+File.separator+"test"+File.separator+"resources"+File.separator+"appConfTest.json";
 	}
 
 	/**
@@ -142,9 +145,9 @@ class CheckerTest {
 		} catch (Exception e) {
 			fail("Lanza la excepción equivocada " + e);
 		}
-		
+			
 		//Ahora establezco un fichero de configuración de la aplicación que sí existe
-		underTest.setAppMetrics("src\\test\\resources\\appConfTest.json");
+		underTest.setAppMetrics(appConfPath);
 		try {
 			//Busco una métrica que se que no está en la configuración de la api pero sí en la de la aplicación
 			log.info("Busco la métrica llamada downloads");
@@ -159,6 +162,8 @@ class CheckerTest {
 		}
 
 	}
+	
+
 
 	/**
 	 * @see org.junit.jupiter.api.Tag
@@ -214,7 +219,7 @@ class CheckerTest {
 		}
 		
 		//Ahora establezco un fichero de configuración de la aplicación que sí existe
-		underTest.setAppMetrics("src\\test\\resources\\appConfTest.json");
+		underTest.setAppMetrics(appConfPath);
 		try {
 			//Busco una métrica que se que no está en la configuración de la api pero sí en la de la aplicación
 			log.info("Busco el indicador llamado pullReqGlory");

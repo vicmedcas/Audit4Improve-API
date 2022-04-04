@@ -1,7 +1,4 @@
-/**
- * 
- */
-package us.muit.fs.a4i.test.control;
+package us.muit.fs.a4i.test.model.entities;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Date;
@@ -113,6 +110,7 @@ class ReportTest {
 	 * Test method for {@link us.muit.fs.a4i.model.entities.Report#Report()}.
 	 */
 	@Test
+	@Tag("noacabado")
 	void testReport() {
 		
 		fail("Not yet implemented"); // TODO
@@ -123,6 +121,7 @@ class ReportTest {
 	 * Test method for {@link us.muit.fs.a4i.model.entities.Report#Report(java.lang.String)}.
 	 */
 	@Test
+	@Tag("noacabado")
 	void testReportString() {
 		reportTested=new Report("id");
 		
@@ -135,6 +134,7 @@ class ReportTest {
 	 * Test method for {@link us.muit.fs.a4i.model.entities.Report#getMetricByName(java.lang.String)}.
 	 */
 	@Test
+	@Tag("noacabado")
 	void testGetMetricByName() {
 		fail("Not yet implemented"); // TODO
 	}
@@ -175,6 +175,7 @@ class ReportTest {
 	 * Test method for {@link us.muit.fs.a4i.model.entities.Report#getIndicatorByName(java.lang.String)}.
 	 */
 	@Test
+	@Tag("noacabado")
 	void testGetIndicatorByName() {
 		fail("Not yet implemented"); // TODO
 	}
@@ -183,6 +184,7 @@ class ReportTest {
 	 * Test method for {@link us.muit.fs.a4i.model.entities.Report#addIndicator(us.muit.fs.a4i.model.entities.Indicator)}.
 	 */
 	@Test
+	@Tag("noacabado")
 	void testAddIndicator() {
 		fail("Not yet implemented"); // TODO
 	}
@@ -232,6 +234,7 @@ class ReportTest {
 	 * Test method for {@link us.muit.fs.a4i.model.entities.Report#setId(java.lang.String)}.
 	 */
 	@Test
+	@Tag("noacabado")
 	void testSetId() {
 		fail("Not yet implemented"); // TODO
 	}
@@ -240,6 +243,7 @@ class ReportTest {
 	 * Test method for {@link us.muit.fs.a4i.model.entities.Report#getId()}.
 	 */
 	@Test
+	@Tag("noacabado")
 	void testGetId() {
 		fail("Not yet implemented"); // TODO
 	}
@@ -254,7 +258,7 @@ class ReportTest {
 		ReportI orgReport=new Report(ReportI.Type.ORGANIZATION);
 		ReportI repoReport=new Report(ReportI.Type.REPOSITORY);
 		ReportI report=new Report();
-		//Vamos a probar establecer la calculadora en un informe que no tiene el tipo aún establecido (Debería tener el tipo de la calculadora al final%9
+		//Vamos a probar establecer la calculadora en un informe que no tiene el tipo aún establecido (Debería tener el tipo de la calculadora al final)
 		//Para ello usamos report
 		try {
 			report.setIndicatorsCalculator(indCalcMock);
@@ -301,6 +305,7 @@ class ReportTest {
 	 * Test method for {@link us.muit.fs.a4i.model.entities.Report#toString()}.
 	 */
 	@Test
+	@Tag("noacabado")
 	void testToString() {
 		fail("Not yet implemented"); // TODO
 	}
@@ -309,6 +314,7 @@ class ReportTest {
 	 * Test method for {@link us.muit.fs.a4i.model.entities.Report#getAllMetrics()}.
 	 */
 	@Test
+	@Tag("noacabado")
 	void testGetAllMetrics() {
 		fail("Not yet implemented"); // TODO
 	}

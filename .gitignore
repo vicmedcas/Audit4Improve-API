@@ -42,3 +42,5 @@ gradle.properties
 *.tar.gz
 *.rar
 /test.xls
+
+javadoc.xml

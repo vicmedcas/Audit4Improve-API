@@ -15,6 +15,8 @@ plugins {
     id 'eclipse'
     //para poder publicar paquetes en github
     id 'maven-publish'
+    //Plugin para análisis estático de código
+    id "nebula.lint" version "17.7.0"
 }
 version = '0.0'
 tasks.withType(JavaCompile) {
@@ -22,8 +24,9 @@ tasks.withType(JavaCompile) {
     options.deprecation = true
     options.encoding = 'ISO-8859-1'
 }
+
 tasks.withType(Javadoc){
-    
+  
     description = "Genera la documentación"
     //indicar que la codificación es ISO
     options.encoding = 'ISO-8859-1'
@@ -33,8 +36,10 @@ tasks.withType(Javadoc){
     options.use = true
     options.memberLevel = JavadocMemberLevel.PROTECTED
     options.footer = "MIT-FS: Curso 2021/22"
-    title = "Supervisor"
+    title = "Audit4Improve-API"    
 }
+
+
 
 repositories {
     // Use Maven Central for resolving dependencies.
@@ -47,27 +52,45 @@ dependencies {
     //Añado la dependencia de la librería github que vamos a usar
   
     // https://mvnrepository.com/artifact/org.kohsuke/github-api
+    //JAVADOC: https://github-api.kohsuke.org/apidocs/index.html
     implementation group: 'org.kohsuke', name: 'github-api', version: '1.301'
+    //Para la persistencia de informes usaremos la api apachepoi
+    // https://mvnrepository.com/artifact/org.apache.poi/poi
+    //JAVADOC: https://poi.apache.org/apidocs/5.0/
+    implementation 'org.apache.poi:poi:5.2.1'
+    //Para leer la configuración como ficheros con datos en formato json
+    // https://mvnrepository.com/artifact/javax.json/javax.json-api
+    //JAVADOC: https://javadoc.io/doc/org.glassfish/javax.json/latest/overview-summary.html
+    implementation group: 'javax.json', name: 'javax.json-api', version: '1.1.4'
+    // https://mvnrepository.com/artifact/org.glassfish/javax.json
+    //JAVADOC: https://www.javadoc.io/doc/org.glassfish/javax.json/1.1/javax/json/JsonObject.html
+    implementation 'org.glassfish:javax.json:1.1.4'
+    
+
+    
     // This dependency is used internally, and not exposed to consumers on their own compile classpath.
     implementation 'com.google.guava:guava:30.1.1-jre'
     //Añado para usar mockito
+    //JAVADOC: https://javadoc.io/doc/org.mockito/mockito-core/4.3.1/overview-summary.html
     testImplementation 'org.mockito:mockito-core:4.3.1'
     // https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter
+    //JAVADOC: https://javadoc.io/doc/org.mockito/mockito-junit-jupiter/latest/index.html
     testImplementation 'org.mockito:mockito-junit-jupiter:4.3.1'
+ 
+	testImplementation(platform('org.junit:junit-bom:5.8.2'))
+	//JAVADOC: https://www.javadoc.io/doc/org.junit.jupiter/junit-jupiter-api/latest/index.html
+	testImplementation('org.junit.jupiter:junit-jupiter')
 
 }
 
-testing {
-    suites {
-        // Configure the built-in test suite
-        test {
-          
-            // Use JUnit Jupiter test framework
-            useJUnitJupiter('5.7.2')
-          
-        }
-    }
+test {
+	useJUnitPlatform()
+	testLogging {
+		events "passed", "skipped", "failed"
+	}
 }
+
+
 //Para publicar paquetes en github
 //group = 'A4I'
 publishing {

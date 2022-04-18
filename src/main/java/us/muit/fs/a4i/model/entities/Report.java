@@ -24,17 +24,9 @@ public class Report implements ReportI {
 	/**
 	 * <p>Identificador unívoco de la entidad a la que se refire el informe en el servidor remoto que se va a utilizar</p>
 	 */
-	private String id;
-	/**
-	 * <p>Los objetos que implementen esta interfaz recurren a calcuadoras con los algoritmos para el cálculo de indicadores<p>
-	 * <p>Los algoritmos de cálculo de indicadores serán específicos para un tipo de informe<p>
-	 */
-	private IndicatorsCalculator calc;
+	private String entityId;
 	
-	
-	
-	
-	private ReportI.Type type=null;
+	private ReportI.ReportType type=null;
 	/**
 	 * Mapa de Métricas
 	 * 
@@ -52,18 +44,18 @@ public class Report implements ReportI {
 		createMaps();
 		
 	}
-	public Report(String id){
+	public Report(String entiyId){
 		createMaps();
-		this.id=id;		
+		this.entityId=entityId;		
 	}
-	public Report(Type type){
+	public Report(ReportType type){
 		createMaps();
 		this.type=type;		
 	}
-	public Report(Type type,String id){
+	public Report(ReportType type,String entityId){
 		createMaps();
 		this.type=type;	
-		this.id=id;		
+		this.entityId=entityId;		
 	}	
 	private void createMaps() {
 		metrics=new HashMap<String,Metric>();
@@ -122,37 +114,16 @@ public class Report implements ReportI {
 		log.info("Añadido indicador "+ind);
 
 	}
-	/**
-	 * <p>Calcula el indicador solicitado y lo incluye en el informe, si se necesita alguna métrica que no exista la calculadora la busca y la incluye<p>
-	 */
-	@Override
-	public void calcIndicator(String name) {
-		try {
-			calc.calcIndicator(name, this);
-		} catch (IndicatorException e) {
-			log.info("No se puede calcular esta indicador, no se incluirá");
-		}
-	}
+
     @Override
-	public void setId(String id) {
-    	this.id=id;
+	public void setId(String entityId) {
+    	this.entityId=entityId;
     }
     @Override
 	public String getId() {
-    	return id;
+    	return entityId;
     }
-    @Override
-    public void setIndicatorsCalculator(IndicatorsCalculator calc) throws IndicatorException {
-		log.info("Se establece la calculadora de indicadores que va a usar este informe");
-		if(this.type==null) {
-			this.type=calc.getReportType();
-			log.info("El tipo del informe será "+this.type);
-		}else if(this.type!=calc.getReportType()){
-			throw new IndicatorException("La calculadora no concuerda con el tipo de informe");
-		}	
-		this.calc=calc;
-	}
-	
+   	
 	@Override
 	public String toString() {
 		String repoinfo;
@@ -172,21 +143,17 @@ public class Report implements ReportI {
 		return metrics.values();
 	}
 	@Override
-	public ReportI.Type getType() {
+	public ReportI.ReportType getType() {
 		return type;
 	}
 	@Override
-	public void setType(ReportI.Type type) {
+	public void setType(ReportI.ReportType type) {
 		//Sólo se puede cambiar si no estaba aún establecido
 		//Un informe no puede cambiar de tipo
 		if (this.type==null) {
 			this.type = type;
 		}
 	}
-	@Override
-	public void calcAllIndicators() {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 }

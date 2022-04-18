@@ -5,6 +5,8 @@ package us.muit.fs.a4i.control;
 
 import java.util.logging.Logger;
 
+import us.muit.fs.a4i.exceptions.IndicatorException;
+import us.muit.fs.a4i.exceptions.MetricException;
 import us.muit.fs.a4i.exceptions.ReportNotDefinedException;
 import us.muit.fs.a4i.model.entities.ReportI;
 import us.muit.fs.a4i.model.remote.RemoteEnquirer;
@@ -12,7 +14,7 @@ import us.muit.fs.a4i.persistence.PersistenceManager;
 import us.muit.fs.a4i.persistence.ReportFormaterI;
 
 /**
- * @author isa
+ * @author Isabel Román
  *
  */
 public class ReportManager implements ReportManagerI {
@@ -94,6 +96,45 @@ public class ReportManager implements ReportManagerI {
 	@Override
 	public ReportI getReport() {
 		return report;
+	}
+    /**
+     * <p>Verifica si el informe está ya creado, si no primero lo crea</p>
+     * <p>verifica si la métrica existía ya, si no se añade</p>
+     */
+	@Override
+	public void addMetric(String metricName) {
+		if(report==null & entityId!=null) {
+			createReport(entityId);
+		}
+		if(entityId!=null & report.getMetricByName(metricName)==null)
+		{
+		try {
+			report.addMetric(this.enquirer.getMetric(metricName, this.entityId));
+		} catch (MetricException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
+		
+	}
+	 /**
+     * <p>Verifica si el informe está ya creado, si no primero lo crea</p>
+     * <p>verifica si el indicador existía ya, si no se añade</p>
+     */
+	@Override
+	public void addIndicator(String indicatorName) {
+		if(report==null & entityId!=null) {
+			createReport(entityId);
+		}
+		if(entityId!=null && report.getIndicatorByName(indicatorName)==null) {
+		try {
+			calc.calcIndicator(indicatorName, this);
+		} catch (IndicatorException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		}
+		
 	}
 
 }

@@ -19,21 +19,21 @@ public interface IndicatorsCalculator {
 	 * <p>Calcula el indicador con el nombre que se pasa y lo incluye en el informe
 	 * Si las métricas que necesita no están en el informe las busca y las añade</p>
 	 * @param name Nombre del indicador a cálcular
-	 * @param report Informe sobre el que realizar el cálculo
+	 * @param reportManager Gestor del Informe sobre el que realizar el cálculo
 	 * @throws IndicatorException Si el indicador no está definido en la calculadora
 	 */
 	
-	public void calcIndicator(String name,ReportI report) throws IndicatorException;
+	public void calcIndicator(String name,ReportManagerI reportManager) throws IndicatorException;
 	/**
 	 * <p>Calcula todos los indicadores configurados para el tipo de informe que se pasa. Debe verificar primero que el tipo de informe que se pasa es correcto</p>
-	 * @param report Informe sobre el que realizar el cálculo
+	 * @param reportManager Gestor del Informe sobre el que realizar el cálculo
 	 * @throws IndicatorException Si el tipo del informe no coincide con el de la calculadora
 	 */
-	public void calcAllIndicators(ReportI report) throws IndicatorException;
+	public void calcAllIndicators(ReportManagerI reportManager) throws IndicatorException;
 	
 	/**
 	 * Devuelve el tipo de informe que maneja esta calculadora de indicadores
 	 * @return El tipo de informes
 	 */
-	public ReportI.Type getReportType();
+	public ReportI.ReportType getReportType();
 }

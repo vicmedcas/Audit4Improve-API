@@ -93,6 +93,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 			MetricBuilder<Integer> issues = new Metric.MetricBuilder<Integer>("issues", remoteRepo.getOpenIssueCount());
 			issues.source("GitHub");
 			myRepo.addMetric(issues.build());
+		
 			/**
 			 * Métricas directas de tipo fecha
 			 */
@@ -122,7 +123,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 					Date fecha = new Date((long) freq.getWeekTimestamp() * 1000);
 					log.info("Fecha modificaciones " + fecha);
 					additions += freq.getAdditions();
-					deletions += freq.getDeletions();
+					deletions += freq.getDeletions();					
 				}
 
 			}
@@ -181,6 +182,7 @@ public class GitHubRepositoryEnquirer extends GitHubEnquirer {
 		case "totalDeletions":
 			metric = getTotalDeletions(remoteRepo);
 			break;
+		
 		default:
 			throw new MetricException("La métrica " + metricName + " no está definida para un repositorio");
 		}

@@ -71,4 +71,14 @@ public interface ReportManagerI {
 	 * <p>Borra el informe que se está manejando actualmente, si la referencia no era nula, según las reglas establecidas por el gestor de persistencia</p>
 	 */
 	public void deleteReport();
+	/**
+	 * <p>Añade una métrica al informe</p>
+	 * @param metricName Nombre de la métrica que se quiere añair
+	 */
+	public void addMetric(String metricName);
+	/**
+	 * <p>Añade un indicador al informe</p>
+	 * @param indicatorName Nombre del indicador que se quiere añadir
+	 */
+	public void addIndicator(String indicatorName);
 }

@@ -13,7 +13,7 @@ public interface ReportI {
 	 * 
 	 */
 
-	public static enum Type{
+	public static enum ReportType{
     	REPOSITORY,
     	DEVELOPER,
     	PROJECT,
@@ -49,13 +49,7 @@ public interface ReportI {
 	 */
 
 	void addIndicator(Indicator ind);
-	/**
-	 * Calcula un indicador a partir de su nombre y lo añade al informe
-	 * Si se basa en métricas que no están aún incluidas en el informe las incluye
-	 * @param name Nombre del indicador que se quiere calcular
-	 */
 
-	void calcIndicator(String name);
 
 	/**
 	 * Establede el identificador unívoco de la entidad a la que se refiere el informe, debe ser el identificador usado en el remoto
@@ -68,26 +62,17 @@ public interface ReportI {
      * @return Identificador unívoco de la entidad a la que se refiere el informe en el remoto
      */
 	String getId();
-	/**
-	 * Establece la calculadora de indicadores, debe ser específica para el tipo de informe
-	 * @param calc calculadora a utilizar para el cálculo de indicadores
-	 * @throws IndicatorException Si el tipo de la calculadora no coincide con el tipo de informe
-	 */
-	void setIndicatorsCalculator(IndicatorsCalculator calc) throws IndicatorException;
-	/**
-	 * Calcula todos los indicadores especificados por defecto para el tipo de informe y los incluye en el informe
-	 * También incluye las métricas utiizadas
-	 */
-	void calcAllIndicators();
+	
+	
 	/**
 	 * Establece el tipo del informe, sólo se puede establecer una vez y debe coincidir con la el tipo de la calculadora usada
 	 * @param type Tipo del informe 
 	 */
-	void setType(ReportI.Type type);
+	void setType(ReportI.ReportType type);
 	/**
 	 * Obtiene el tipo del informe
 	 * @return Tipo del informe
 	 */
-	ReportI.Type getType();
+	ReportI.ReportType getType();
 
 }

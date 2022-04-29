@@ -40,7 +40,17 @@ tasks.withType(Javadoc){
 }
 
 
-
+task defaultProperties { 
+    println "Project: $project" 
+    println "Name: $name" 
+    println "Path: $path" 
+    println "Project directory: $projectDir" 
+    println "Build directory: $buildDir" 
+    println "Version: $version" 
+    println "Group: $project.group" 
+    println "Description: $project.description" 
+    println "Level: $logging.level" 
+}
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
@@ -100,8 +110,9 @@ publishing {
             url = uri("https://maven.pkg.github.com/mit-fs/audit4improve-api")
             credentials {
             //las propiedades gpr.user y gpr.key están configuradas en gradle.properties en el raiz del proyecto, y se añade a .gitignore para que no se suban
-                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_USERNAME")
-                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_TOKEN")
+            //O bien configuro las variables de entorno GITHUB_LOGIN y GITHUB_PACKAGES
+                username = project.findProperty("gpr.user") ?: System.getenv("GITHUB_LOGIN")
+                password = project.findProperty("gpr.key") ?: System.getenv("GITHUB_PACKAGES")
                 }
         }
     }

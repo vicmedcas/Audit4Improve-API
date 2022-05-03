@@ -3,8 +3,11 @@
  */
 package us.muit.fs.a4i.config;
 
+import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.logging.Logger;
 
@@ -33,6 +36,9 @@ import javax.json.*;
 public class Checker {
 	private static Logger log = Logger.getLogger(Checker.class.getName());
 	private String a4iMetrics = "a4iDefault.json";
+	/*
+	 * Definir la ruta completa del fichero de configuración
+	 */
 	private String appMetrics = null;
 
 	public void setAppMetrics(String appMetricsPath) {
@@ -56,25 +62,31 @@ public class Checker {
 		log.info("Checker solicitud de búsqueda métrica " + metricName);
 		
 		HashMap<String,String> metricDefinition=null;
-		String fileName = getClass().getClassLoader().getResource(a4iMetrics).getFile();
-		log.info("Buscando el archivo " + fileName);
-
-		metricDefinition = isDefinedMetric(metricName, metricType, fileName);
+		
+		String filePath="/"+a4iMetrics;
+		log.info("Buscando el archivo " + filePath);
+		InputStream is=this.getClass().getResourceAsStream(filePath);
+		log.info("InputStream "+is+" para "+filePath);
+		InputStreamReader isr = new InputStreamReader(is);
+		
+	
+		metricDefinition = isDefinedMetric(metricName, metricType, isr);
 		if ((metricDefinition==null) && appMetrics != null) {
-			metricDefinition = isDefinedMetric(metricName, metricType, appMetrics);
+			is=new FileInputStream(appMetrics);
+			isr=new InputStreamReader(is);			
+			metricDefinition = isDefinedMetric(metricName, metricType, isr);
 		}
 
 		return metricDefinition;
 	}
 
-	private HashMap<String,String> isDefinedMetric(String metricName, String metricType, String filePath)
+	private HashMap<String,String> isDefinedMetric(String metricName, String metricType, InputStreamReader isr)
 			throws FileNotFoundException {
 		
 		HashMap<String,String> metricDefinition=null;
 
-		FileInputStream is = new FileInputStream(filePath);
-		log.info("Creo el inputStream");
-		JsonReader reader = Json.createReader(is);
+	
+		JsonReader reader = Json.createReader(isr);
 		log.info("Creo el JsonReader");
 
 		JsonObject confObject = reader.readObject();
@@ -118,22 +130,31 @@ public class Checker {
 		HashMap<String,String> indicatorDefinition=null;
 		log.info("Checker solicitud de búsqueda indicador " + indicatorName);
 		boolean defined = false;
-		String fileName = getClass().getClassLoader().getResource(a4iMetrics).getFile();
-		log.info("Buscando el archivo " + fileName);
-		indicatorDefinition = isDefinedIndicator(indicatorName, indicatorType, fileName);
+		
+		
+		String filePath="/"+a4iMetrics;
+		log.info("Buscando el archivo " + filePath);
+		InputStream is=this.getClass().getResourceAsStream(filePath);
+		log.info("InputStream "+is+" para "+filePath);
+		InputStreamReader isr = new InputStreamReader(is);
+		
+	
+				
+		indicatorDefinition = isDefinedIndicator(indicatorName, indicatorType, isr);
 		if ((indicatorDefinition==null) && appMetrics != null) {
-			indicatorDefinition = isDefinedIndicator(indicatorName, indicatorType, appMetrics);
+			is=new FileInputStream(appMetrics);
+			isr=new InputStreamReader(is);			
+			indicatorDefinition = isDefinedIndicator(indicatorName, indicatorType, isr);
 		}
 
 		return indicatorDefinition;
 	}
 
-	private  HashMap<String,String> isDefinedIndicator(String indicatorName, String indicatorType, String filePath)
+	private  HashMap<String,String> isDefinedIndicator(String indicatorName, String indicatorType, InputStreamReader isr)
 			throws FileNotFoundException {
 		HashMap<String,String> indicatorDefinition=null;
-		FileInputStream is = new FileInputStream(filePath);
-		log.info("Creo el inputStream");
-		JsonReader reader = Json.createReader(is);
+	
+		JsonReader reader = Json.createReader(isr);
 		log.info("Creo el JsonReader");
 
 		JsonObject confObject = reader.readObject();
@@ -163,26 +184,31 @@ public class Checker {
 	public HashMap<String,String> getMetricInfo(String metricName) throws FileNotFoundException {
 		log.info("Checker solicitud de búsqueda detalles de la métrica " + metricName);
 		
-		HashMap<String,String> metricDefinition=null;
-		String fileName = getClass().getClassLoader().getResource(a4iMetrics).getFile();
-		log.info("Buscando el archivo " + fileName);
+		HashMap<String,String> metricDefinition=null;	
+		String filePath="/"+a4iMetrics;
+		log.info("Buscando el archivo " + filePath);
+		InputStream is=this.getClass().getResourceAsStream(filePath);
+		log.info("InputStream "+is+" para "+filePath);
+		InputStreamReader isr = new InputStreamReader(is);
 
-		metricDefinition = getMetricInfo(metricName, fileName);
+		log.info("Creo el inputStream");
+		metricDefinition = getMetricInfo(metricName, isr);
 		if ((metricDefinition==null) && appMetrics != null) {
-			metricDefinition = getMetricInfo(metricName, appMetrics);
+			is=new FileInputStream(appMetrics);
+			isr=new InputStreamReader(is);
+			metricDefinition = getMetricInfo(metricName, isr);
 		}
 
 		return metricDefinition;
 	}
 	
-	private HashMap<String,String> getMetricInfo(String metricName, String filePath)
+	
+	private HashMap<String,String> getMetricInfo(String metricName, InputStreamReader isr)
 			throws FileNotFoundException {
 		
 		HashMap<String,String> metricDefinition=null;
-
-		FileInputStream is = new FileInputStream(filePath);
-		log.info("Creo el inputStream");
-		JsonReader reader = Json.createReader(is);
+		
+		JsonReader reader = Json.createReader(isr);
 		log.info("Creo el JsonReader");
 
 		JsonObject confObject = reader.readObject();

@@ -7,6 +7,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Properties;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -228,12 +230,13 @@ public class Context {
 		FileInputStream file;
 		// Establecemos las propiedades por defecto, del fichero de configuración
 		// embebido en el jar
-		Properties defProp = new Properties();
-		String filePath = getClass().getClassLoader().getResource(confFile).getFile();
-		log.info("Usando el fichero " + filePath);
-		file = new FileInputStream(filePath);
-		defProp.load(file);
-		properties = new Properties(defProp);
+	
+		properties = new Properties();
+		String filePath="/"+confFile;
+		InputStream is=this.getClass().getResourceAsStream(filePath);
+		log.info("InputStream "+is+" para "+filePath);			
+		properties.load(is);		
+		log.fine("Listado de propiedades "+properties);
 
 	}
 

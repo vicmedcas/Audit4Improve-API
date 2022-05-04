@@ -8,7 +8,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javax.json.*;
@@ -185,18 +187,11 @@ public class Checker {
 		log.info("Checker solicitud de búsqueda detalles de la métrica " + metricName);
 		
 		HashMap<String,String> metricDefinition=null;	
-		String filePath="/"+a4iMetrics;
-		log.info("Buscando el archivo " + filePath);
-		InputStream is=this.getClass().getResourceAsStream(filePath);
-		log.info("InputStream "+is+" para "+filePath);
-		InputStreamReader isr = new InputStreamReader(is);
-
-		log.info("Creo el inputStream");
-		metricDefinition = getMetricInfo(metricName, isr);
+	
+		metricDefinition = getMetricInfo(metricName, getDefaultInputStream());
 		if ((metricDefinition==null) && appMetrics != null) {
-			is=new FileInputStream(appMetrics);
-			isr=new InputStreamReader(is);
-			metricDefinition = getMetricInfo(metricName, isr);
+			
+			metricDefinition = getMetricInfo(metricName, getAppInputStream());
 		}
 
 		return metricDefinition;
@@ -207,7 +202,7 @@ public class Checker {
 			throws FileNotFoundException {
 		
 		HashMap<String,String> metricDefinition=null;
-		
+		/*
 		JsonReader reader = Json.createReader(isr);
 		log.info("Creo el JsonReader");
 
@@ -217,6 +212,8 @@ public class Checker {
 
 		log.info("Muestro la configuración leída " + confObject);
 		JsonArray metrics = confObject.getJsonArray("metrics");
+		*/
+		JsonArray metrics = readJson(isr,"metrics");
 		log.info("El número de métricas es " + metrics.size());
 		for (int i = 0; i < metrics.size(); i++) {
 			log.info("nombre: " + metrics.get(i).asJsonObject().getString("name"));
@@ -234,5 +231,55 @@ public class Checker {
 
 		return metricDefinition;
 	}
+/**
+ * <p>Devuelve un listado con todos los nombres de métricas localizados</p>
+ * @return Listado de nombres de métricas
+ * @throws FileNotFoundException
+ */
+	public List<String> listAllMetrics()
+			throws FileNotFoundException {
+        List<String> metrics= new ArrayList<String>();
+			
+		JsonArray metricsArray = readJson(getDefaultInputStream(),"metrics");
+		log.info("El número de métricas es " + metricsArray.size());
+		for (int i = 0; i < metricsArray.size(); i++) {
+			log.info("nombre: " + metricsArray.get(i).asJsonObject().getString("name"));
+			metrics.add(metricsArray.get(i).asJsonObject().getString("name"));				
+		}
+		if (appMetrics != null) {
+			 metricsArray = readJson(getAppInputStream(),"metrics");
+			 for (int i = 0; i < metricsArray.size(); i++) {
+					log.info("nombre: " + metricsArray.get(i).asJsonObject().getString("name"));
+					metrics.add(metricsArray.get(i).asJsonObject().getString("name"));				
+				}
+		}
+		return metrics;
 
+}
+	private JsonArray readJson(InputStreamReader isr,String type) {
+		JsonReader reader = Json.createReader(isr);
+		log.info("Creo el JsonReader");
+
+		JsonObject confObject = reader.readObject();
+		log.info("Leo el objeto");
+		reader.close();
+
+		log.info("Muestro la configuración leída " + confObject);
+		JsonArray jsonArray = confObject.getJsonArray(type);
+		return jsonArray;
+	}
+	private InputStreamReader getDefaultInputStream() {
+		String filePath="/"+a4iMetrics;
+		log.info("Buscando el archivo " + filePath);
+		InputStream is=this.getClass().getResourceAsStream(filePath);
+		log.info("InputStream "+is+" para "+filePath);
+		InputStreamReader isr = new InputStreamReader(is);
+
+		log.info("Creo el inputStream");
+		return isr;
+	}
+	private InputStreamReader getAppInputStream() throws FileNotFoundException {
+		InputStream is=new FileInputStream(appMetrics);
+		return new InputStreamReader(is);
+	}
 }

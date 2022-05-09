@@ -95,7 +95,7 @@ public class Context {
 	 * 
 	 * @param appConPath Ruta completa al fichero de configuración establecido por la
 	 *               propiedad cliente
-	 * @throws IOException
+	 * @throws IOException Problema lectura fichero
 	 */
 	public static void setAppConf(String appConPath) throws IOException {
 		/**
@@ -148,7 +148,7 @@ public class Context {
 	 * Si no se ha establecido un valor por defecto se crea una fuente simple
 	 * </p>
 	 * 
-	 * @return
+	 * @return La fuente por defecto para indicadores y métricas
 	 */
 	public Font getDefaultFont() {
 		Font font = null;
@@ -172,7 +172,7 @@ public class Context {
 	 * por defecto
 	 * </p>
 	 * 
-	 * @return
+	 * @return la fuente para las métricas
 	 */
 	public static Font getMetricFont() {
 		Font font = null;
@@ -191,7 +191,7 @@ public class Context {
 	 * 
 	 * @param state Estado para el que se solicita el color de fuente
 	 * @return La fuente para el indicador cuando el estado es el parámetro pasado
-	 * @throws IOException
+	 * @throws IOException problema al leer el fichero
 	 */
 
 	public static Font getIndicatorFont(Indicator.State state) throws IOException {

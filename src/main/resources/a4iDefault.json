@@ -38,8 +38,14 @@
 		{
 			"name": "lastPush",
 			"type": "java.util.Date",
-			"description": "Último push realizado en el repositorio",
+			"description": "ï¿½ltimo push realizado en el repositorio",
 			"unit": "date"
+		},
+		{
+			"name": "totalAdditions",
+			"type": "java.lang.Integer",
+			"description": "Modificaciones realizadas",
+			"unit": "additions"
 		}
 	],
 	"indicators": [{

@@ -1,0 +1,20 @@
+name: Flujo de trabajo para ejecutar los test
+on:
+  workflow_dispatch:
+  issues:
+    types: [opened, edited, milestoned]
+jobs:
+  Build:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_LOGIN: ${{ github.actor }}
+      GITHUB_PACKAGES: ${{ secrets.GITHUB_TOKEN }}
+      GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Haciendo checkout a la ultima version
+        uses: actions/checkout@v3
+
+      # Make changes to pull request here
+
+      - name: Crear Pull Request
+        uses: peter-evans/create-pull-request@v4

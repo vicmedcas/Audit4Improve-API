@@ -39,6 +39,8 @@ jobs:
       GITHUB_OAUTH: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      chmod +x gradlew        
-      ./gradlew test
+      - name:Probando el código
+        run: |
+          chmod +x gradlew        
+          ./gradlew test
        
